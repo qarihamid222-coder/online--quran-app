@@ -24,6 +24,13 @@ export function MobileNavMenu() {
         <div className="absolute inset-x-0 top-full border-b border-zinc-200 bg-white px-4 py-4 dark:border-zinc-800 dark:bg-black">
           <div className="flex flex-col items-start gap-4">
             <Link
+              href="/#courses"
+              onClick={() => setIsOpen(false)}
+              className="text-sm font-medium text-zinc-600 dark:text-zinc-400"
+            >
+              Courses
+            </Link>
+            <Link
               href="/quran"
               onClick={() => setIsOpen(false)}
               className="text-sm font-medium text-zinc-600 dark:text-zinc-400"

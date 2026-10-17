@@ -1,6 +1,9 @@
-# Online Quran
+# Al-Hameed Online Quran Academy
 
-A website for reading, listening to, and studying the Holy Quran online — Arabic text (Uthmani script), English and Urdu translations, and per-ayah audio recitation.
+The website for Al-Hameed Online Quran Academy: course information (Noorani Qaida, Nazra
+Quran, Quran Tajweed, Hifz-ul-Quran, Arabic Grammar, Arabic Language), a free 3-day trial
+and WhatsApp contact, plus a full Quran reader — Arabic text (Uthmani script), English and
+Urdu translations, per-ayah audio recitation, search, and bookmarks.
 
 ## Tech stack
 
@@ -35,15 +38,19 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ```
 app/               Routes (App Router pages, layouts, API routes)
+  page.tsx         Academy landing page (Hero, Audience, Courses, Trial)
   quran/           Surah list, surah reader, juz index, and juz reader pages
   bookmarks/       Bookmarks page
 components/
+  academy/         Academy landing-page sections (Hero, AudienceSection, CoursesSection,
+                    CourseCard, TrialSection)
   quran/           Quran-specific UI (SurahCard, SurahList, SurahHeader, AyahCard, SurahDivider,
                     SurahSearch, AyahSearchInput, BookmarkButton, ...)
   bookmarks/       Bookmarks list UI
-  layout/          Navbar, ThemeToggle, BookmarksNavLink, Footer, Sidebar
-  ui/              Shared/generic UI primitives (Skeleton, EmptyState, ErrorState)
+  layout/          Navbar, ThemeToggle, BookmarksNavLink, Footer, WhatsAppButton
+  ui/              Shared/generic UI primitives (Skeleton, EmptyState, ErrorState, ImagePlaceholder)
 lib/
+  academy/         Course data (courses.ts) and contact details/WhatsApp link builder (contact.ts)
   quran/           Quran data client — isolated wrapper around the external Quran API
                     (search.ts holds the pure surah/ayah search predicates)
   theme.ts         Light/Dark/System theme state, shared by the toggle and the blocking init script
@@ -51,7 +58,25 @@ hooks/             Reusable React hooks (useAudioPlayer, useAyahSearch, useBookm
 store/             Client-side state (bookmarks.ts: a small localStorage-backed store)
 prisma/            Database schema (added in a later phase)
 tests/             Automated tests (mirrors the source layout)
+public/images/
+  courses/         Course photos (empty placeholder dir; cards show "Photo coming soon" until filled)
+  academy/         General academy photos (hero/audience sections)
 ```
+
+## Academy branding
+
+- **Colors** — Islamic green (`--color-primary`), gold (`--color-accent`), and red
+  (`--color-danger`, used sparingly for badges like "Limited offer") over a warm cream
+  surface (`--color-surface`), defined in `app/globals.css` alongside the existing
+  light/dark background tokens.
+- **Fonts** — `font-nastaliq` (Noto Nastaliq Urdu) for Urdu copy, same pattern as the
+  existing `font-arabic` (Noto Naskh Arabic) for Quranic text. Noto Nastaliq Urdu is a
+  free, openly licensed stand-in for Jameel Noori Nastaleeq, which is a proprietary
+  desktop font not available for web embedding; swap in a licensed copy via
+  `next/font/local` in `app/layout.tsx` if one becomes available.
+- **Contact** — `lib/academy/contact.ts` holds the WhatsApp number, phone, and email.
+  These are **placeholder values** (marked `TODO`) — replace them with the real academy
+  contact details before launch.
 
 ## Quran data
 

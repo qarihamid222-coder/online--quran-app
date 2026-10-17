@@ -8,19 +8,44 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  /* Academy palette: Islamic green (primary), gold (accent), red (used sparingly,
+     e.g. trial badges), and a warm cream surface for sections that should stand
+     apart from the pure-white background. */
+  --primary: #0f7b3e;
+  --primary-foreground: #ffffff;
+  --accent: #ca8a04;
+  --accent-foreground: #171717;
+  --danger: #b91c1c;
+  --danger-foreground: #ffffff;
+  --surface: #fffdf7;
 }
 
 :root.dark {
   --background: #0a0a0a;
   --foreground: #ededed;
+  --primary: #22c55e;
+  --primary-foreground: #052e12;
+  --accent: #eab308;
+  --accent-foreground: #171717;
+  --danger: #f87171;
+  --danger-foreground: #450a0a;
+  --surface: #0a120d;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-danger: var(--danger);
+  --color-danger-foreground: var(--danger-foreground);
+  --color-surface: var(--surface);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --font-arabic: var(--font-arabic);
+  --font-nastaliq: var(--font-nastaliq);
 }
 
 body {
