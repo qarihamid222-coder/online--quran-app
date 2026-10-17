@@ -16,6 +16,15 @@ export const AUDIENCE_LABELS: Record<Audience, string> = {
   beginners: 'Beginners',
 };
 
+/** Ties each audience tag to one of the three theme colors, so course cards
+ *  carry a visible, balanced mix of green, gold, and red rather than one
+ *  color dominating. */
+export const AUDIENCE_BADGE_CLASSES: Record<Audience, string> = {
+  children: 'bg-primary/10 text-primary dark:bg-primary/15',
+  adults: 'bg-danger/10 text-danger dark:bg-danger/15',
+  beginners: 'bg-accent/10 text-accent-foreground dark:bg-accent/20 dark:text-accent',
+};
+
 export const COURSES: Course[] = [
   {
     slug: 'noorani-qaida',

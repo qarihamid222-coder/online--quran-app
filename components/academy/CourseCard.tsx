@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { ImagePlaceholder } from '@/components/ui/ImagePlaceholder';
 import { whatsappLink } from '@/lib/academy/contact';
-import { AUDIENCE_LABELS, type Course } from '@/lib/academy/courses';
+import { AUDIENCE_BADGE_CLASSES, AUDIENCE_LABELS, type Course } from '@/lib/academy/courses';
 
 export function CourseCard({ course }: { course: Course }) {
   return (
@@ -34,17 +34,19 @@ export function CourseCard({ course }: { course: Course }) {
           {course.audience.map((tag) => (
             <span
               key={tag}
-              className="bg-primary/10 text-primary dark:bg-primary/15 rounded-full px-3 py-1 text-xs font-medium"
+              className={`rounded-full px-3 py-1 text-xs font-semibold ${AUDIENCE_BADGE_CLASSES[tag]}`}
             >
               {AUDIENCE_LABELS[tag]}
             </span>
           ))}
         </div>
+        {/* Sized to match the hero and free-trial CTAs, so every WhatsApp
+            button on the site is equally easy to tap. */}
         <a
           href={whatsappLink(`Assalam o Alaikum! I'm interested in the ${course.name} course.`)}
           target="_blank"
           rel="noopener noreferrer"
-          className="bg-primary text-primary-foreground mt-1 inline-flex items-center justify-center rounded-lg px-4 py-2.5 text-sm font-semibold transition-opacity hover:opacity-90"
+          className="bg-primary text-primary-foreground mt-2 inline-flex w-full items-center justify-center rounded-full px-8 py-3.5 text-base font-semibold transition-opacity hover:opacity-90"
         >
           Ask on WhatsApp
         </a>

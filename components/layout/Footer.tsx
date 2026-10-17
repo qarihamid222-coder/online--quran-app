@@ -6,9 +6,7 @@ export function Footer() {
     <footer className="bg-surface border-t border-zinc-200 px-4 py-10 sm:px-6 dark:border-zinc-800">
       <div className="mx-auto flex max-w-5xl flex-col gap-6 sm:flex-row sm:justify-between">
         <div>
-          <p className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">
-            Al-Hameed Online Quran Academy
-          </p>
+          <p className="text-primary text-lg font-semibold">Al-Hameed Online Quran Academy</p>
           <p
             dir="rtl"
             lang="ur"

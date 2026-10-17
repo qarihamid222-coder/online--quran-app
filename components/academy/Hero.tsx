@@ -37,7 +37,7 @@ export function Hero() {
             </a>
             <Link
               href="#courses"
-              className="border-primary text-primary hover:bg-primary/10 inline-flex w-full items-center justify-center rounded-full border-2 px-8 py-3.5 text-base font-semibold transition-colors sm:w-auto"
+              className="border-accent text-accent-foreground hover:bg-accent/10 dark:text-accent inline-flex w-full items-center justify-center rounded-full border-2 px-8 py-3.5 text-base font-semibold transition-colors sm:w-auto"
             >
               View Courses
             </Link>

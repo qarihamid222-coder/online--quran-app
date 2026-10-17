@@ -18,7 +18,7 @@ export function TrialSection() {
           href={whatsappLink('Assalam o Alaikum! I would like to start a free 3-day trial class.')}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-primary mt-6 inline-flex items-center justify-center rounded-full bg-white px-8 py-3.5 text-base font-semibold transition-opacity hover:opacity-90"
+          className="text-primary border-accent mt-6 inline-flex items-center justify-center rounded-full border-2 bg-white px-8 py-3.5 text-base font-semibold transition-opacity hover:opacity-90"
         >
           Start Free Trial on WhatsApp
         </a>

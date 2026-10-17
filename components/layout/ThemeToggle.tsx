@@ -43,7 +43,7 @@ export function ThemeToggle() {
     <div
       role="radiogroup"
       aria-label="Theme"
-      className="flex items-center gap-0.5 rounded-full border border-zinc-200 p-0.5 dark:border-zinc-800"
+      className="flex items-center gap-1 rounded-full border border-zinc-200 p-1 dark:border-zinc-800"
     >
       {OPTIONS.map((option) => {
         const isSelected = mode === option.mode;
@@ -56,7 +56,7 @@ export function ThemeToggle() {
             aria-label={option.label}
             title={option.label}
             onClick={() => selectMode(option.mode)}
-            className={`flex h-7 w-7 items-center justify-center rounded-full text-sm transition-colors ${
+            className={`flex h-10 w-10 items-center justify-center rounded-full text-lg transition-colors ${
               isSelected
                 ? 'bg-zinc-900 dark:bg-zinc-50'
                 : 'hover:bg-zinc-100 dark:hover:bg-zinc-800'

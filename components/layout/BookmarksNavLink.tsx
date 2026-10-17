@@ -2,18 +2,16 @@
 
 import Link from 'next/link';
 import { useBookmarks } from '@/hooks/useBookmarks';
+import { NAV_LINK_CLASSES } from './navStyles';
 
-export function BookmarksNavLink() {
+export function BookmarksNavLink({ className = NAV_LINK_CLASSES }: { className?: string }) {
   const bookmarks = useBookmarks();
 
   return (
-    <Link
-      href="/bookmarks"
-      className="flex items-center gap-1.5 text-sm font-medium text-zinc-600 transition-colors hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-50"
-    >
+    <Link href="/bookmarks" className={`flex items-center gap-2 ${className}`}>
       Bookmarks
       {bookmarks.length > 0 ? (
-        <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-zinc-200 px-1 text-xs font-semibold text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
+        <span className="bg-primary/15 text-primary flex h-6 min-w-6 items-center justify-center rounded-full px-1.5 text-sm font-semibold">
           {bookmarks.length}
         </span>
       ) : null}

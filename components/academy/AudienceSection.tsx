@@ -1,20 +1,25 @@
 import { ImagePlaceholder } from '@/components/ui/ImagePlaceholder';
 
+// Each audience is tied to one of the three theme colors (matching the
+// course-card badges), so green, gold, and red are all clearly present here.
 const AUDIENCES = [
   {
     title: 'Children',
     description:
       'A gentle, encouraging start — Noorani Qaida and Nazra classes paced for young learners.',
+    colorClass: 'text-primary',
   },
   {
     title: 'Adults',
     description:
       'Flexible class times for working professionals, parents, and anyone starting (or restarting) their Quran journey.',
+    colorClass: 'text-danger',
   },
   {
     title: 'Beginners',
     description:
       "No prior knowledge needed. Every course starts from the basics, in the language you're most comfortable in.",
+    colorClass: 'text-accent',
   },
 ];
 
@@ -33,7 +38,7 @@ export function AudienceSection() {
           <dl className="mt-8 flex flex-col gap-6">
             {AUDIENCES.map((item) => (
               <div key={item.title}>
-                <dt className="text-primary text-lg font-semibold">{item.title}</dt>
+                <dt className={`text-lg font-semibold ${item.colorClass}`}>{item.title}</dt>
                 <dd className="mt-1 text-base text-zinc-600 dark:text-zinc-400">
                   {item.description}
                 </dd>

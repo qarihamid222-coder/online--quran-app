@@ -47,6 +47,13 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
       </head>
       <body className="flex min-h-full flex-col">
+        {/* A thin, site-wide tricolor accent so green, gold, and red are all
+            visible on every page without any large color block dominating
+            the cream/white background. */}
+        <div
+          aria-hidden="true"
+          className="from-primary via-accent to-danger h-1.5 w-full bg-gradient-to-r"
+        />
         <Navbar />
         <main className="flex flex-1 flex-col">{children}</main>
         <Footer />
