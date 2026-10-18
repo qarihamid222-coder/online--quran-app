@@ -417,7 +417,7 @@ describe('fetchJuz', () => {
     await expect(fetchJuz(30)).rejects.toBeInstanceOf(QuranApiError);
   });
 
-  it('throws a QuranApiError when an ayah is missing its surah information', async () => {
+  it('throws a QuranApiError when every ayah is missing its surah information', async () => {
     vi.stubGlobal(
       'fetch',
       vi.fn().mockResolvedValue(
@@ -436,6 +436,38 @@ describe('fetchJuz', () => {
     );
 
     await expect(fetchJuz(30)).rejects.toBeInstanceOf(QuranApiError);
+  });
+
+  it('skips just the one ayah missing surah information, keeping the rest', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue(
+        jsonResponse({
+          code: 200,
+          status: 'OK',
+          data: [
+            {
+              number: 30,
+              edition: { identifier: 'quran-uthmani' },
+              ayahs: [
+                { number: 6231, numberInSurah: 1, text: 'قُلْ' }, // missing `surah`
+                {
+                  number: 6210,
+                  numberInSurah: 1,
+                  text: 'قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ',
+                  surah: { number: 113, name: 'سُورَةُ الْفَلَقِ', englishName: 'Al-Falaq' },
+                },
+              ],
+            },
+          ],
+        }),
+      ),
+    );
+
+    const juz = await fetchJuz(30);
+
+    expect(juz.ayahs).toHaveLength(1);
+    expect(juz.ayahs[0].surahNumber).toBe(113);
   });
 });
 

@@ -303,25 +303,42 @@ export async function fetchJuz(juzNumber: number): Promise<JuzDetail> {
     throw new QuranApiError('The Quran data service did not return the Arabic text for this juz.');
   }
 
-  const ayahs: JuzAyah[] = arabicEdition.ayahs.map((ayah, index) => {
-    if (!ayah.surah) {
-      throw new QuranApiError('The Quran data service returned a verse with no surah information.');
+  // A single ayah missing its surah grouping info shouldn't take down an
+  // otherwise-good juz of ~200 verses — skip just that one ayah rather than
+  // failing the whole page. This never fabricates data: an omitted ayah is
+  // left out, never shown with invented surah info.
+  const ayahs: JuzAyah[] = arabicEdition.ayahs.flatMap((ayah, index) => {
+    if (
+      !ayah.surah ||
+      typeof ayah.surah.number !== 'number' ||
+      !ayah.surah.name ||
+      !ayah.surah.englishName
+    ) {
+      return [];
     }
 
-    return {
-      number: ayah.numberInSurah,
-      numberInQuran: ayah.number,
-      arabicText: ayah.text,
-      translations: {
-        english: englishEdition?.ayahs[index]?.text,
-        urdu: urduEdition?.ayahs[index]?.text,
+    return [
+      {
+        number: ayah.numberInSurah,
+        numberInQuran: ayah.number,
+        arabicText: ayah.text,
+        translations: {
+          english: englishEdition?.ayahs[index]?.text,
+          urdu: urduEdition?.ayahs[index]?.text,
+        },
+        audioUrl: getAyahAudioUrl(ayah.number),
+        surahNumber: ayah.surah.number,
+        surahName: ayah.surah.name,
+        surahEnglishName: ayah.surah.englishName,
       },
-      audioUrl: getAyahAudioUrl(ayah.number),
-      surahNumber: ayah.surah.number,
-      surahName: ayah.surah.name,
-      surahEnglishName: ayah.surah.englishName,
-    };
+    ];
   });
+
+  if (ayahs.length === 0 && arabicEdition.ayahs.length > 0) {
+    throw new QuranApiError(
+      'The Quran data service returned verses with no usable surah information for this juz.',
+    );
+  }
 
   return {
     number: juzNumber,
