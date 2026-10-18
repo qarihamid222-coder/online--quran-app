@@ -1,13 +1,10 @@
 /** Contact details for the Al-Hameed Online Quran Academy. */
 
-// TODO: replace with the real academy WhatsApp number before going live
-// (international format, digits only — no "+", spaces, or leading 0).
-export const WHATSAPP_NUMBER = '923000000000';
+export const WHATSAPP_NUMBER = '923237185867';
 
-// TODO: replace with the real display phone number.
-export const PHONE_DISPLAY = '+92 300 0000000';
+export const PHONE_DISPLAY = '+92 323 7185867';
 
-// TODO: replace with the real contact email.
+// TODO: replace with the real contact email once provided.
 export const CONTACT_EMAIL = 'info@example.com';
 
 export function whatsappLink(message: string): string {

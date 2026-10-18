@@ -85,18 +85,37 @@ async function fetchQuranApi<T>(path: string): Promise<T> {
     throw new QuranApiError('The Quran data service returned an error.', response.status);
   }
 
-  let json: AlQuranApiEnvelope<T>;
+  let json: unknown;
   try {
-    json = (await response.json()) as AlQuranApiEnvelope<T>;
+    json = await response.json();
   } catch {
     throw new QuranApiError('The Quran data service returned an unreadable response.');
   }
 
-  if (json.code !== 200 || json.data === undefined) {
+  // The API's envelope shape isn't guaranteed by TypeScript at runtime — guard
+  // against a malformed or unexpected body (e.g. null, an array, or a missing
+  // `data` field) so callers get a clear, catchable error instead of a raw
+  // crash further down (e.g. calling `.map`/`.find` on something that isn't
+  // actually an array).
+  if (
+    typeof json !== 'object' ||
+    json === null ||
+    !('code' in json) ||
+    (json as { code: unknown }).code !== 200 ||
+    !('data' in json) ||
+    (json as { data: unknown }).data == null
+  ) {
     throw new QuranApiError('The Quran data service returned an unexpected response.');
   }
 
-  return json.data;
+  return (json as AlQuranApiEnvelope<T>).data;
+}
+
+function assertArray<T>(value: T[], errorMessage: string): T[] {
+  if (!Array.isArray(value)) {
+    throw new QuranApiError(errorMessage);
+  }
+  return value;
 }
 
 function toRevelationType(value: string): RevelationType {
@@ -120,7 +139,9 @@ export function isValidSurahNumber(value: number): boolean {
 
 export async function fetchSurahList(): Promise<SurahSummary[]> {
   const data = await fetchQuranApi<RawSurahSummary[]>('/surah');
-  return data.map(mapSurahSummary);
+  return assertArray(data, 'The Quran data service returned an unexpected surah list.').map(
+    mapSurahSummary,
+  );
 }
 
 export async function fetchSurah(surahNumber: number): Promise<SurahDetail> {
@@ -131,7 +152,10 @@ export async function fetchSurah(surahNumber: number): Promise<SurahDetail> {
   const editions = [ARABIC_EDITION, TRANSLATION_EDITIONS.english, TRANSLATION_EDITIONS.urdu].join(
     ',',
   );
-  const data = await fetchQuranApi<RawSurahEdition[]>(`/surah/${surahNumber}/editions/${editions}`);
+  const rawData = await fetchQuranApi<RawSurahEdition[]>(
+    `/surah/${surahNumber}/editions/${editions}`,
+  );
+  const data = assertArray(rawData, 'The Quran data service returned an unexpected surah.');
 
   const arabicEdition = data.find((edition) => edition.edition.identifier === ARABIC_EDITION);
   const englishEdition = data.find(
@@ -141,7 +165,7 @@ export async function fetchSurah(surahNumber: number): Promise<SurahDetail> {
     (edition) => edition.edition.identifier === TRANSLATION_EDITIONS.urdu,
   );
 
-  if (!arabicEdition) {
+  if (!arabicEdition || !Array.isArray(arabicEdition.ayahs)) {
     throw new QuranApiError(
       'The Quran data service did not return the Arabic text for this surah.',
     );
@@ -181,7 +205,8 @@ export async function fetchJuz(juzNumber: number): Promise<JuzDetail> {
   const editions = [ARABIC_EDITION, TRANSLATION_EDITIONS.english, TRANSLATION_EDITIONS.urdu].join(
     ',',
   );
-  const data = await fetchQuranApi<RawJuzEdition[]>(`/juz/${juzNumber}/editions/${editions}`);
+  const rawData = await fetchQuranApi<RawJuzEdition[]>(`/juz/${juzNumber}/editions/${editions}`);
+  const data = assertArray(rawData, 'The Quran data service returned an unexpected juz.');
 
   const arabicEdition = data.find((edition) => edition.edition.identifier === ARABIC_EDITION);
   const englishEdition = data.find(
@@ -191,23 +216,29 @@ export async function fetchJuz(juzNumber: number): Promise<JuzDetail> {
     (edition) => edition.edition.identifier === TRANSLATION_EDITIONS.urdu,
   );
 
-  if (!arabicEdition) {
+  if (!arabicEdition || !Array.isArray(arabicEdition.ayahs)) {
     throw new QuranApiError('The Quran data service did not return the Arabic text for this juz.');
   }
 
-  const ayahs: JuzAyah[] = arabicEdition.ayahs.map((ayah, index) => ({
-    number: ayah.numberInSurah,
-    numberInQuran: ayah.number,
-    arabicText: ayah.text,
-    translations: {
-      english: englishEdition?.ayahs[index]?.text,
-      urdu: urduEdition?.ayahs[index]?.text,
-    },
-    audioUrl: getAyahAudioUrl(ayah.number),
-    surahNumber: ayah.surah.number,
-    surahName: ayah.surah.name,
-    surahEnglishName: ayah.surah.englishName,
-  }));
+  const ayahs: JuzAyah[] = arabicEdition.ayahs.map((ayah, index) => {
+    if (!ayah.surah) {
+      throw new QuranApiError('The Quran data service returned a verse with no surah information.');
+    }
+
+    return {
+      number: ayah.numberInSurah,
+      numberInQuran: ayah.number,
+      arabicText: ayah.text,
+      translations: {
+        english: englishEdition?.ayahs[index]?.text,
+        urdu: urduEdition?.ayahs[index]?.text,
+      },
+      audioUrl: getAyahAudioUrl(ayah.number),
+      surahNumber: ayah.surah.number,
+      surahName: ayah.surah.name,
+      surahEnglishName: ayah.surah.englishName,
+    };
+  });
 
   return {
     number: juzNumber,

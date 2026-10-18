@@ -6,7 +6,13 @@ export interface Course {
   urduName: string;
   description: string;
   audience: Audience[];
-  /** Set once a real photo is added to public/images/courses/; null shows a placeholder. */
+  /**
+   * Set once a real photo is added, to show it instead of the "Photo coming
+   * soon" placeholder. To add one: drop the file at
+   * `public/images/courses/<slug>.jpg` (e.g. `public/images/courses/noorani-qaida.jpg`
+   * for the Noorani Qaida course below) and set this field to
+   * `{ src: '/images/courses/<slug>.jpg', alt: 'A short description of the photo' }`.
+   */
   image: { src: string; alt: string } | null;
 }
 
@@ -33,6 +39,7 @@ export const COURSES: Course[] = [
     description:
       'The first step on the journey: Arabic letters, correct pronunciation, and the basic rules of reading. The right foundation for young children and absolute beginners.',
     audience: ['children', 'beginners'],
+    // Upload to: public/images/courses/noorani-qaida.jpg
     image: null,
   },
   {
@@ -42,6 +49,7 @@ export const COURSES: Course[] = [
     description:
       'Learn to read the Holy Quran fluently in Arabic, ayah by ayah and surah by surah, with a qualified teacher guiding every lesson.',
     audience: ['children', 'adults', 'beginners'],
+    // Upload to: public/images/courses/nazra-quran.jpg
     image: null,
   },
   {
@@ -51,6 +59,7 @@ export const COURSES: Course[] = [
     description:
       'Master the rules of Tajweed to recite the Quran with the correct pronunciation, exactly as it was revealed.',
     audience: ['children', 'adults'],
+    // Upload to: public/images/courses/quran-tajweed.jpg
     image: null,
   },
   {

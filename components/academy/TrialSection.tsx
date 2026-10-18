@@ -1,4 +1,5 @@
 import { whatsappLink } from '@/lib/academy/contact';
+import { TrialForm } from './TrialForm';
 
 export function TrialSection() {
   return (
@@ -22,7 +23,11 @@ export function TrialSection() {
         >
           Start Free Trial on WhatsApp
         </a>
+        <p className="text-primary-foreground/80 mt-8 text-sm font-medium tracking-wide uppercase">
+          Or tell us about the student first
+        </p>
       </div>
+      <TrialForm />
     </section>
   );
 }

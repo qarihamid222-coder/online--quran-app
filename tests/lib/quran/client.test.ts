@@ -94,6 +94,21 @@ describe('fetchSurahList', () => {
 
     await expect(fetchSurahList()).rejects.toBeInstanceOf(QuranApiError);
   });
+
+  it('throws a QuranApiError when the envelope body is not an object', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(jsonResponse(null)));
+
+    await expect(fetchSurahList()).rejects.toBeInstanceOf(QuranApiError);
+  });
+
+  it('throws a QuranApiError when `data` is not an array', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue(jsonResponse({ code: 200, status: 'OK', data: { oops: true } })),
+    );
+
+    await expect(fetchSurahList()).rejects.toBeInstanceOf(QuranApiError);
+  });
 });
 
 describe('fetchSurah', () => {
@@ -328,6 +343,27 @@ describe('fetchJuz', () => {
               number: 30,
               edition: { identifier: 'en.sahih' },
               ayahs: [],
+            },
+          ],
+        }),
+      ),
+    );
+
+    await expect(fetchJuz(30)).rejects.toBeInstanceOf(QuranApiError);
+  });
+
+  it('throws a QuranApiError when an ayah is missing its surah information', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue(
+        jsonResponse({
+          code: 200,
+          status: 'OK',
+          data: [
+            {
+              number: 30,
+              edition: { identifier: 'quran-uthmani' },
+              ayahs: [{ number: 6231, numberInSurah: 1, text: 'قُلْ' }],
             },
           ],
         }),

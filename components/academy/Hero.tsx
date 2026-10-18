@@ -1,6 +1,8 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { ImagePlaceholder } from '@/components/ui/ImagePlaceholder';
 import { whatsappLink } from '@/lib/academy/contact';
+import { HERO_IMAGE } from '@/lib/academy/images';
 
 export function Hero() {
   return (
@@ -43,10 +45,23 @@ export function Hero() {
             </Link>
           </div>
         </div>
-        <ImagePlaceholder
-          label="Children learning Quran — photo coming soon"
-          className="h-64 w-full lg:h-96"
-        />
+        {HERO_IMAGE ? (
+          <div className="relative h-64 w-full overflow-hidden rounded-2xl lg:h-96">
+            <Image
+              src={HERO_IMAGE.src}
+              alt={HERO_IMAGE.alt}
+              fill
+              sizes="(min-width: 1024px) 50vw, 100vw"
+              priority
+              className="object-cover"
+            />
+          </div>
+        ) : (
+          <ImagePlaceholder
+            label="Children learning Quran — photo coming soon"
+            className="h-64 w-full lg:h-96"
+          />
+        )}
       </div>
     </section>
   );
