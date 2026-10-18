@@ -10,9 +10,12 @@ import { SurahHeader } from '@/components/quran/SurahHeader';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { TOTAL_SURAHS, fetchSurah, isValidSurahNumber } from '@/lib/quran';
 
-// Surah data comes from a live external API — render per request instead of
-// attempting to prerender at build time.
-export const dynamic = 'force-dynamic';
+// This route has no generateStaticParams, so a route-level `revalidate`
+// export has no effect here — Next.js only applies it to a static shell,
+// which a param route without generateStaticParams never gets. The actual
+// per-surah caching (so a transient upstream failure can't reach rendering
+// for a surah that's already been read) lives on the fetch call itself, in
+// lib/quran/client.ts.
 
 function parseSurahNumber(surahId: string): number | null {
   const surahNumber = Number(surahId);

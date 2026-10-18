@@ -18,6 +18,29 @@ export class QuranApiError extends Error {
   }
 }
 
+/**
+ * Every message this module's own errors can carry. A production error
+ * boundary (error.tsx) should only ever show one of these to a visitor —
+ * never raw internal error text. In production, Next.js's own Server
+ * Component error redaction (or, in rarer cases, an unrelated React runtime
+ * error reaching the same boundary) can hand the client an `Error` whose
+ * `.message` is something like "Minified React error #...", which is not
+ * anything a visitor should see. `error.name` isn't a reliable way to tell
+ * these apart, because production redaction doesn't preserve a thrown
+ * error's subclass — it always reconstructs a plain `Error` client-side.
+ * Matching against known message text is what's actually reliable here.
+ */
+const KNOWN_ERROR_MESSAGE_PREFIXES = [
+  'Unable to reach the Quran data service',
+  'The Quran data service',
+  'Invalid surah number',
+  'Invalid juz number',
+] as const;
+
+export function isKnownQuranApiErrorMessage(message: string): boolean {
+  return KNOWN_ERROR_MESSAGE_PREFIXES.some((prefix) => message.startsWith(prefix));
+}
+
 interface AlQuranApiEnvelope<T> {
   code: number;
   status: string;
@@ -71,10 +94,70 @@ interface RawJuzEdition {
   };
 }
 
+const FETCH_TIMEOUT_MS = 8000;
+const MAX_ATTEMPTS = 3;
+const RETRY_DELAY_MS = [300, 800];
+
+function delay(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+/**
+ * The upstream API is a third-party service with no uptime guarantee — a
+ * single slow or dropped request is common in production and otherwise
+ * surfaces as a one-off error page. Since Next.js reuses a page's last
+ * render (errors included) on browser back/forward navigation, one
+ * transient failure can otherwise look "stuck" until a hard refresh. Retrying
+ * transient failures here, before they ever reach the page, is what actually
+ * fixes that instead of just prettifying the error message.
+ */
+async function fetchWithRetry(url: string): Promise<Response> {
+  let lastError: unknown;
+
+  for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
+    if (attempt > 0) {
+      await delay(RETRY_DELAY_MS[attempt - 1]);
+    }
+
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
+
+    try {
+      // `next.revalidate` engages Next's per-URL Data Cache directly on this
+      // fetch call, independent of whether the route itself is statically
+      // generated. This matters specifically for /quran/[surahId] and
+      // /quran/juz/[juzNumber]: without `generateStaticParams`, the route's
+      // own `export const revalidate` has no effect and every request would
+      // otherwise hit the live upstream API every single time — exactly the
+      // condition that reproduced "Minified React error #441" in production
+      // when that live request failed. Caching the underlying fetch means a
+      // transient upstream failure can no longer reach rendering at all for
+      // previously-visited content.
+      const response = await fetch(url, {
+        signal: controller.signal,
+        next: { revalidate: 3600 },
+      });
+      // Retry server errors (5xx) — likely transient — but not client errors
+      // (4xx, e.g. an invalid path), which a retry can't fix.
+      if (response.status >= 500 && attempt < MAX_ATTEMPTS - 1) {
+        lastError = new QuranApiError('The Quran data service returned an error.', response.status);
+        continue;
+      }
+      return response;
+    } catch (error) {
+      lastError = error;
+    } finally {
+      clearTimeout(timeout);
+    }
+  }
+
+  throw lastError;
+}
+
 async function fetchQuranApi<T>(path: string): Promise<T> {
   let response: Response;
   try {
-    response = await fetch(`${QURAN_API_BASE_URL}${path}`);
+    response = await fetchWithRetry(`${QURAN_API_BASE_URL}${path}`);
   } catch {
     throw new QuranApiError(
       'Unable to reach the Quran data service. Check your connection and try again.',

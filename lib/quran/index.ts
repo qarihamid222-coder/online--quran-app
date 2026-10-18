@@ -3,6 +3,7 @@ export {
   fetchJuz,
   fetchSurah,
   fetchSurahList,
+  isKnownQuranApiErrorMessage,
   isValidJuzNumber,
   isValidSurahNumber,
 } from './client';

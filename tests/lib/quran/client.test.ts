@@ -4,6 +4,7 @@ import {
   fetchJuz,
   fetchSurah,
   fetchSurahList,
+  isKnownQuranApiErrorMessage,
   isValidJuzNumber,
   isValidSurahNumber,
 } from '@/lib/quran/client';
@@ -58,7 +59,7 @@ describe('fetchSurahList', () => {
 
     const surahs = await fetchSurahList();
 
-    expect(fetchMock).toHaveBeenCalledWith('https://api.alquran.cloud/v1/surah');
+    expect(fetchMock.mock.calls[0][0]).toBe('https://api.alquran.cloud/v1/surah');
     expect(surahs).toEqual([
       {
         number: 1,
@@ -71,19 +72,83 @@ describe('fetchSurahList', () => {
     ]);
   });
 
-  it('throws a QuranApiError when the network request fails', async () => {
+  it('throws a QuranApiError when the network request fails on every attempt', async () => {
     vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new TypeError('fetch failed')));
 
     await expect(fetchSurahList()).rejects.toBeInstanceOf(QuranApiError);
   });
 
-  it('throws a QuranApiError when the response is not ok', async () => {
+  it('throws a QuranApiError when every attempt returns a server error', async () => {
     vi.stubGlobal('fetch', vi.fn().mockResolvedValue(jsonResponse({}, { ok: false, status: 500 })));
 
     await expect(fetchSurahList()).rejects.toMatchObject({
       name: 'QuranApiError',
       status: 500,
     });
+  });
+
+  it('recovers after a transient network failure, without surfacing an error', async () => {
+    const fetchMock = vi
+      .fn()
+      .mockRejectedValueOnce(new TypeError('fetch failed'))
+      .mockResolvedValueOnce(
+        jsonResponse({
+          code: 200,
+          status: 'OK',
+          data: [
+            {
+              number: 1,
+              name: 'Test',
+              englishName: 'Test',
+              englishNameTranslation: 'Test',
+              numberOfAyahs: 1,
+              revelationType: 'Meccan',
+            },
+          ],
+        }),
+      );
+    vi.stubGlobal('fetch', fetchMock);
+
+    const surahs = await fetchSurahList();
+
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+    expect(surahs).toHaveLength(1);
+  });
+
+  it('recovers after a transient 5xx response, without surfacing an error', async () => {
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce(jsonResponse({}, { ok: false, status: 503 }))
+      .mockResolvedValueOnce(
+        jsonResponse({
+          code: 200,
+          status: 'OK',
+          data: [
+            {
+              number: 1,
+              name: 'Test',
+              englishName: 'Test',
+              englishNameTranslation: 'Test',
+              numberOfAyahs: 1,
+              revelationType: 'Meccan',
+            },
+          ],
+        }),
+      );
+    vi.stubGlobal('fetch', fetchMock);
+
+    const surahs = await fetchSurahList();
+
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+    expect(surahs).toHaveLength(1);
+  });
+
+  it('does not retry a 4xx client error', async () => {
+    const fetchMock = vi.fn().mockResolvedValue(jsonResponse({}, { ok: false, status: 404 }));
+    vi.stubGlobal('fetch', fetchMock);
+
+    await expect(fetchSurahList()).rejects.toMatchObject({ status: 404 });
+    expect(fetchMock).toHaveBeenCalledTimes(1);
   });
 
   it('throws a QuranApiError when the envelope reports a non-200 code', async () => {
@@ -173,7 +238,7 @@ describe('fetchSurah', () => {
 
     const surah = await fetchSurah(1);
 
-    expect(fetchMock).toHaveBeenCalledWith(
+    expect(fetchMock.mock.calls[0][0]).toBe(
       'https://api.alquran.cloud/v1/surah/1/editions/quran-uthmani,en.sahih,ur.jalandhry',
     );
     expect(surah.number).toBe(1);
@@ -310,7 +375,7 @@ describe('fetchJuz', () => {
 
     const juz = await fetchJuz(30);
 
-    expect(fetchMock).toHaveBeenCalledWith(
+    expect(fetchMock.mock.calls[0][0]).toBe(
       'https://api.alquran.cloud/v1/juz/30/editions/quran-uthmani,en.sahih,ur.jalandhry',
     );
     expect(juz.number).toBe(30);
@@ -371,5 +436,30 @@ describe('fetchJuz', () => {
     );
 
     await expect(fetchJuz(30)).rejects.toBeInstanceOf(QuranApiError);
+  });
+});
+
+describe('isKnownQuranApiErrorMessage', () => {
+  it('recognizes every message QuranApiError actually throws', () => {
+    expect(
+      isKnownQuranApiErrorMessage(
+        'Unable to reach the Quran data service. Check your connection and try again.',
+      ),
+    ).toBe(true);
+    expect(isKnownQuranApiErrorMessage('The Quran data service returned an error.')).toBe(true);
+    expect(isKnownQuranApiErrorMessage('Invalid surah number: 200.')).toBe(true);
+    expect(isKnownQuranApiErrorMessage('Invalid juz number: 99.')).toBe(true);
+  });
+
+  it('rejects unrecognized text, such as a raw internal error message', () => {
+    expect(
+      isKnownQuranApiErrorMessage(
+        'Minified React error #441; visit https://react.dev/errors/441 for the full message.',
+      ),
+    ).toBe(false);
+    expect(isKnownQuranApiErrorMessage('TypeError: Cannot read properties of undefined')).toBe(
+      false,
+    );
+    expect(isKnownQuranApiErrorMessage('')).toBe(false);
   });
 });
