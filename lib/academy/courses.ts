@@ -40,8 +40,10 @@ export const COURSES: Course[] = [
     description:
       'The first step on the journey: Arabic letters, correct pronunciation, and the basic rules of reading. The right foundation for young children and absolute beginners.',
     audience: ['children', 'beginners'],
-    // Upload to: public/images/courses/noorani-qaida.jpg
-    image: null,
+    image: {
+      src: '/images/courses/noorani-qaida.png',
+      alt: 'Al-Hameed Online Quran Academy promotional banner for "Qaida for Beginners": a child wearing headphones points to a Qaida book during an online lesson',
+    },
   },
   {
     slug: 'nazra-quran',
@@ -50,8 +52,10 @@ export const COURSES: Course[] = [
     description:
       'Learn to read the Holy Quran fluently in Arabic, ayah by ayah and surah by surah, with a qualified teacher guiding every lesson.',
     audience: ['children', 'adults', 'beginners'],
-    // Upload to: public/images/courses/nazra-quran.jpg
-    image: null,
+    image: {
+      src: '/images/courses/nazra-quran.png',
+      alt: 'Al-Hameed Online Quran Academy promotional banner for "Nazira Quran Reading": a child wearing headphones reads the Quran during an online lesson',
+    },
   },
   {
     slug: 'quran-tajweed',
@@ -72,12 +76,10 @@ export const COURSES: Course[] = [
     description:
       'Memorize the complete Holy Quran with a structured daily plan, regular revision, and one-on-one guidance from a Hifz teacher.',
     audience: ['children', 'adults'],
-    // Upload to: public/images/courses/hifz-ul-quran.webp — still needed: a
-    // photo of children memorizing the Quran with their teacher. The two
-    // "Hifz" photos supplied so far were identical to each other and to the
-    // one used for the homepage hero, and showed no teacher, so this slot
-    // is left as a placeholder rather than reusing that photo here too.
-    image: null,
+    image: {
+      src: '/images/courses/hifz-ul-quran.webp',
+      alt: 'A Hifz teacher guiding four children as they memorize the Quran at individual desks in a classroom labeled "Hifz e Quran Classes"',
+    },
   },
   {
     slug: 'arabic-grammar',
