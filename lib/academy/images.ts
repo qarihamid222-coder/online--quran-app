@@ -7,5 +7,5 @@
  */
 export const HERO_IMAGE: { src: string; alt: string } | null = {
   src: '/images/academy/hero-children-learning.webp',
-  alt: 'Four children reading from the Holy Quran together at a table, with a mosque visible through the window behind them',
+  alt: 'A teacher guiding children through Quran reading at a wooden stand while other children study with laptops and headphones, with a mosque visible through the window behind them',
 };
