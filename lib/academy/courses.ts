@@ -9,9 +9,10 @@ export interface Course {
   /**
    * Set once a real photo is added, to show it instead of the "Photo coming
    * soon" placeholder. To add one: drop the file at
-   * `public/images/courses/<slug>.jpg` (e.g. `public/images/courses/noorani-qaida.jpg`
-   * for the Noorani Qaida course below) and set this field to
-   * `{ src: '/images/courses/<slug>.jpg', alt: 'A short description of the photo' }`.
+   * `public/images/courses/<slug>.<ext>` (e.g. `public/images/courses/noorani-qaida.jpg`
+   * for the Noorani Qaida course below — any common image format works, not
+   * just `.jpg`) and set this field to
+   * `{ src: '/images/courses/<slug>.<ext>', alt: 'A short description of the photo' }`.
    */
   image: { src: string; alt: string } | null;
 }
@@ -59,8 +60,10 @@ export const COURSES: Course[] = [
     description:
       'Master the rules of Tajweed to recite the Quran with the correct pronunciation, exactly as it was revealed.',
     audience: ['children', 'adults'],
-    // Upload to: public/images/courses/quran-tajweed.jpg
-    image: null,
+    image: {
+      src: '/images/courses/quran-tajweed.webp',
+      alt: 'A teacher guiding four children through Quran recitation and Tajweed, each reading from their own Quran on a wooden stand',
+    },
   },
   {
     slug: 'hifz-ul-quran',
@@ -69,6 +72,11 @@ export const COURSES: Course[] = [
     description:
       'Memorize the complete Holy Quran with a structured daily plan, regular revision, and one-on-one guidance from a Hifz teacher.',
     audience: ['children', 'adults'],
+    // Upload to: public/images/courses/hifz-ul-quran.webp — still needed: a
+    // photo of children memorizing the Quran with their teacher. The two
+    // "Hifz" photos supplied so far were identical to each other and to the
+    // one used for the homepage hero, and showed no teacher, so this slot
+    // is left as a placeholder rather than reusing that photo here too.
     image: null,
   },
   {
@@ -78,7 +86,10 @@ export const COURSES: Course[] = [
     description:
       'Understand Quranic Arabic grammar (Nahw & Sarf) to connect directly with the meaning of the Quran, beyond translation.',
     audience: ['adults', 'beginners'],
-    image: null,
+    image: {
+      src: '/images/courses/arabic-grammar.webp',
+      alt: 'A teacher pointing to an Arabic grammar lesson on a whiteboard, with students writing notes at their desks',
+    },
   },
   {
     slug: 'arabic-language',
@@ -87,7 +98,10 @@ export const COURSES: Course[] = [
     description:
       'Learn to read, write, and speak Arabic for everyday life and for a deeper understanding of the Quran and Islamic texts.',
     audience: ['adults', 'beginners'],
-    image: null,
+    image: {
+      src: '/images/courses/arabic-language.webp',
+      alt: 'A teacher pointing to Arabic vocabulary words on a whiteboard, with students writing notes at their desks',
+    },
   },
 ];
 
