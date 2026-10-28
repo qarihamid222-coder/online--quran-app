@@ -47,7 +47,7 @@ export function AudienceSection() {
           />
         )}
         <div>
-          <h2 className="text-3xl font-semibold text-zinc-900 sm:text-4xl dark:text-zinc-50">
+          <h2 className="text-heading text-3xl font-semibold sm:text-4xl">
             For every age, every level
           </h2>
           <dl className="mt-8 flex flex-col gap-6">

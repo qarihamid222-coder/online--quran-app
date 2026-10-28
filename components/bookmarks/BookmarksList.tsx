@@ -22,7 +22,7 @@ export function BookmarksList() {
       {bookmarks.map((bookmark) => (
         <li
           key={bookmark.numberInQuran}
-          className="flex items-start justify-between gap-4 rounded-lg border border-zinc-200 bg-white px-4 py-3 dark:border-zinc-800 dark:bg-zinc-950"
+          className="flex items-start justify-between gap-4 rounded-lg border border-card-border bg-white px-4 py-3 dark:bg-zinc-950"
         >
           <Link
             href={`/quran/${bookmark.surahNumber}#ayah-${bookmark.numberInQuran}`}

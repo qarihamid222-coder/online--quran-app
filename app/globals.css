@@ -6,30 +6,37 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-  --background: #ffffff;
+  --background: #f0f7ff;
   --foreground: #171717;
-  /* Academy palette: Islamic green (primary), gold (accent), red (used sparingly,
-     e.g. trial badges), and a warm cream surface for sections that should stand
-     apart from the pure-white background. */
-  --primary: #0f7b3e;
+  /* Academy palette: professional blue (primary), gold (accent), red (used
+     sparingly, e.g. trial badges), a very pale blue page background, and two
+     alternating section tones (white / soft blue) so no section reads as a
+     large block of saturated color. */
+  --primary: #2563eb;
   --primary-foreground: #ffffff;
-  --accent: #ca8a04;
+  --accent: #c9a44c;
   --accent-foreground: #171717;
   --danger: #b91c1c;
   --danger-foreground: #ffffff;
-  --surface: #fffdf7;
+  --surface: #ffffff;
+  --surface-soft: #eaf3ff;
+  --heading: #173b67;
+  --card-border: #bfdbfe;
 }
 
 :root.dark {
-  --background: #0a0a0a;
+  --background: #0b1424;
   --foreground: #ededed;
-  --primary: #22c55e;
-  --primary-foreground: #052e12;
-  --accent: #eab308;
+  --primary: #3b82f6;
+  --primary-foreground: #ffffff;
+  --accent: #d4b45e;
   --accent-foreground: #171717;
   --danger: #f87171;
   --danger-foreground: #450a0a;
-  --surface: #0a120d;
+  --surface: #10213a;
+  --surface-soft: #13263f;
+  --heading: #bfdbfe;
+  --card-border: #1e3a5f;
 }
 
 @theme inline {
@@ -42,6 +49,9 @@
   --color-danger: var(--danger);
   --color-danger-foreground: var(--danger-foreground);
   --color-surface: var(--surface);
+  --color-surface-soft: var(--surface-soft);
+  --color-heading: var(--heading);
+  --color-card-border: var(--card-border);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --font-arabic: var(--font-arabic);

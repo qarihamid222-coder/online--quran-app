@@ -12,7 +12,7 @@ export function Hero() {
           <p className="text-primary text-sm font-semibold tracking-wide uppercase">
             Al-Hameed Online Quran Academy
           </p>
-          <h1 className="mt-3 text-4xl font-bold tracking-tight text-zinc-900 sm:text-5xl dark:text-zinc-50">
+          <h1 className="text-heading mt-3 text-4xl font-bold tracking-tight sm:text-5xl">
             Learn the Quran, online, from anywhere
           </h1>
           <p

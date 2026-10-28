@@ -5,7 +5,7 @@ import { AUDIENCE_BADGE_CLASSES, AUDIENCE_LABELS, type Course } from '@/lib/acad
 
 export function CourseCard({ course }: { course: Course }) {
   return (
-    <li className="flex flex-col overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-950">
+    <li className="flex flex-col overflow-hidden rounded-2xl border border-card-border bg-white shadow-sm dark:bg-zinc-950">
       {course.image ? (
         <div className="relative h-40 w-full">
           <Image
@@ -24,7 +24,7 @@ export function CourseCard({ course }: { course: Course }) {
       )}
       <div className="flex flex-1 flex-col gap-3 p-6">
         <div>
-          <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">{course.name}</h3>
+          <h3 className="text-lg font-semibold text-heading">{course.name}</h3>
           <p dir="rtl" lang="ur" className="font-nastaliq text-primary mt-0.5 text-base">
             {course.urduName}
           </p>

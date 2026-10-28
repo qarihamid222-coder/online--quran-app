@@ -23,7 +23,7 @@ export function SurahSearch({ surahs }: SurahSearchProps) {
         onChange={(event) => setQuery(event.target.value)}
         placeholder="Search surahs by name, meaning, or number…"
         aria-label="Search surahs"
-        className="mb-6 w-full rounded-lg border border-zinc-200 bg-white px-4 py-2.5 text-sm text-zinc-900 placeholder:text-zinc-400 focus:border-zinc-400 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 dark:placeholder:text-zinc-500"
+        className="mb-6 w-full rounded-lg border border-card-border bg-white px-4 py-2.5 text-sm text-zinc-900 placeholder:text-zinc-400 focus:border-zinc-400 focus:outline-none dark:bg-zinc-950 dark:text-zinc-100 dark:placeholder:text-zinc-500"
       />
       {filteredSurahs.length === 0 ? (
         <EmptyState title="No surahs found" description={`No surah matches "${query.trim()}".`} />

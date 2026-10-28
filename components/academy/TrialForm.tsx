@@ -13,7 +13,7 @@ import {
 } from '@/lib/academy/trialForm';
 
 const FIELD_CLASSES =
-  'w-full rounded-lg border border-zinc-200 bg-white px-4 py-2.5 text-base text-zinc-900 placeholder:text-zinc-400 focus:border-primary focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100';
+  'w-full rounded-lg border border-card-border bg-white px-4 py-2.5 text-base text-zinc-900 placeholder:text-zinc-400 focus:border-primary focus:outline-none dark:bg-zinc-900 dark:text-zinc-100';
 const LABEL_CLASSES = 'text-sm font-medium text-zinc-700 dark:text-zinc-300';
 
 export function TrialForm() {
@@ -55,7 +55,7 @@ export function TrialForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="mx-auto mt-8 flex max-w-xl flex-col gap-4 rounded-2xl border border-zinc-200 bg-white p-6 text-left shadow-sm sm:p-8 dark:border-zinc-800 dark:bg-zinc-950"
+      className="mx-auto mt-8 flex max-w-xl flex-col gap-4 rounded-2xl border border-card-border bg-white p-6 text-left shadow-sm sm:p-8 dark:bg-zinc-950"
       noValidate
     >
       <div className="grid gap-4 sm:grid-cols-2">

@@ -43,7 +43,7 @@ export function ThemeToggle() {
     <div
       role="radiogroup"
       aria-label="Theme"
-      className="flex items-center gap-1 rounded-full border border-zinc-200 p-1 dark:border-zinc-800"
+      className="flex items-center gap-1 rounded-full border border-card-border p-1"
     >
       {OPTIONS.map((option) => {
         const isSelected = mode === option.mode;

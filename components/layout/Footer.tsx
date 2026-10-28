@@ -3,7 +3,7 @@ import { CONTACT_EMAIL, PHONE_DISPLAY, whatsappLink } from '@/lib/academy/contac
 
 export function Footer() {
   return (
-    <footer className="bg-surface border-t border-zinc-200 px-4 py-10 sm:px-6 dark:border-zinc-800">
+    <footer className="bg-surface border-t border-card-border px-4 py-10 sm:px-6">
       <div className="mx-auto flex max-w-5xl flex-col gap-6 sm:flex-row sm:justify-between">
         <div>
           <p className="text-primary text-lg font-semibold">Al-Hameed Online Quran Academy</p>
