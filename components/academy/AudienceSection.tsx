@@ -1,4 +1,6 @@
+import Image from 'next/image';
 import { ImagePlaceholder } from '@/components/ui/ImagePlaceholder';
+import { AUDIENCE_IMAGE } from '@/lib/academy/images';
 
 // Each audience is tied to one of the three theme colors (matching the
 // course-card badges), so green, gold, and red are all clearly present here.
@@ -27,10 +29,23 @@ export function AudienceSection() {
   return (
     <section className="px-4 py-16 sm:px-6">
       <div className="mx-auto grid max-w-5xl gap-10 lg:grid-cols-2 lg:items-center">
-        <ImagePlaceholder
-          label="Students in an online class — photo coming soon"
-          className="h-64 w-full lg:h-80"
-        />
+        {AUDIENCE_IMAGE ? (
+          <div className="relative h-64 w-full overflow-hidden rounded-2xl lg:h-80">
+            <Image
+              src={AUDIENCE_IMAGE.src}
+              alt={AUDIENCE_IMAGE.alt}
+              fill
+              sizes="(min-width: 1024px) 50vw, 100vw"
+              loading="lazy"
+              className="object-cover"
+            />
+          </div>
+        ) : (
+          <ImagePlaceholder
+            label="Students in an online class — photo coming soon"
+            className="h-64 w-full lg:h-80"
+          />
+        )}
         <div>
           <h2 className="text-3xl font-semibold text-zinc-900 sm:text-4xl dark:text-zinc-50">
             For every age, every level
