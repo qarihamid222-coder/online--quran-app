@@ -46,7 +46,7 @@ export function Hero() {
           </div>
         </div>
         {HERO_IMAGE ? (
-          <div className="relative h-64 w-full overflow-hidden rounded-2xl lg:h-96">
+          <div className="relative aspect-video w-full overflow-hidden rounded-2xl">
             <Image
               src={HERO_IMAGE.src}
               alt={HERO_IMAGE.alt}
