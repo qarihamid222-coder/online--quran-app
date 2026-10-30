@@ -22,6 +22,9 @@
   --surface-soft: #eaf3ff;
   --heading: #173b67;
   --card-border: #bfdbfe;
+  /* Quran reader: Arabic and Urdu translation get their own colors. */
+  --arabic-text: #0b3d2e;
+  --urdu-text: #7c2d12;
 }
 
 :root.dark {
@@ -37,6 +40,8 @@
   --surface-soft: #13263f;
   --heading: #bfdbfe;
   --card-border: #1e3a5f;
+  --arabic-text: #86efac;
+  --urdu-text: #fdba74;
 }
 
 @theme inline {
@@ -52,9 +57,12 @@
   --color-surface-soft: var(--surface-soft);
   --color-heading: var(--heading);
   --color-card-border: var(--card-border);
+  --color-arabic-text: var(--arabic-text);
+  --color-urdu-text: var(--urdu-text);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --font-arabic: var(--font-arabic);
+  --font-quran: var(--font-quran), var(--font-arabic);
   --font-nastaliq: var(--font-nastaliq);
 }
 

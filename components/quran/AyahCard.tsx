@@ -85,7 +85,7 @@ export function AyahCard({ ayah, index, surahNumber, surahEnglishName }: AyahCar
         <p
           dir="rtl"
           lang="ar"
-          className="font-arabic flex-1 text-right text-2xl leading-loose text-zinc-900 dark:text-zinc-50"
+          className="font-quran text-arabic-text flex-1 text-right text-3xl leading-[2.2]"
         >
           {ayah.arabicText}
         </p>
@@ -99,7 +99,7 @@ export function AyahCard({ ayah, index, surahNumber, surahEnglishName }: AyahCar
         <p
           dir="rtl"
           lang="ur"
-          className="pl-10 text-right text-base text-zinc-700 dark:text-zinc-300"
+          className="font-nastaliq text-urdu-text pl-10 text-right text-lg leading-[2.2]"
         >
           {ayah.translations.urdu}
         </p>
