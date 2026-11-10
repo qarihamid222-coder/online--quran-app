@@ -68,9 +68,9 @@ export default async function JuzReaderPage({ params }: PageProps<'/quran/juz/[j
 
   return (
     <article className="mx-auto w-full max-w-3xl px-4 py-10 sm:px-6">
-      <header className="flex flex-col items-center gap-2 border-b border-card-border pb-6 text-center">
+      <header className="border-card-border flex flex-col items-center gap-2 border-b pb-6 text-center">
         <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400">Juz</p>
-        <h1 className="text-3xl font-semibold text-heading">Juz {juz.number}</h1>
+        <h1 className="text-heading text-3xl font-semibold">Juz {juz.number}</h1>
       </header>
 
       {juz.ayahs.length === 0 ? (
@@ -113,7 +113,7 @@ export default async function JuzReaderPage({ params }: PageProps<'/quran/juz/[j
         </AudioPlayerProvider>
       )}
 
-      <nav className="mt-10 flex items-center justify-between gap-4 border-t border-card-border pt-6">
+      <nav className="border-card-border mt-10 flex items-center justify-between gap-4 border-t pt-6">
         {previousJuz ? (
           <Link
             href={`/quran/juz/${previousJuz}`}

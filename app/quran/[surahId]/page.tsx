@@ -82,7 +82,7 @@ export default async function SurahReaderPage({ params }: PageProps<'/quran/[sur
         </AudioPlayerProvider>
       )}
 
-      <nav className="mt-10 flex items-center justify-between gap-4 border-t border-card-border pt-6">
+      <nav className="border-card-border mt-10 flex items-center justify-between gap-4 border-t pt-6">
         {previousSurah ? (
           <Link
             href={`/quran/${previousSurah}`}
