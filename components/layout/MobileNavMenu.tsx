@@ -26,7 +26,7 @@ export function MobileNavMenu() {
       </button>
 
       {isOpen ? (
-        <div className="absolute inset-x-0 top-full border-b border-card-border bg-white px-3 py-3 shadow-lg dark:bg-black">
+        <div className="border-card-border absolute inset-x-0 top-full border-b bg-white px-3 py-3 shadow-lg dark:bg-black">
           <div className="flex flex-col gap-1">
             <Link href="/#courses" onClick={() => setIsOpen(false)} className={MOBILE_LINK_CLASSES}>
               Courses

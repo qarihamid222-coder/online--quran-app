@@ -55,7 +55,7 @@ export function TrialForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="mx-auto mt-8 flex max-w-xl flex-col gap-4 rounded-2xl border border-card-border bg-white p-6 text-left shadow-sm sm:p-8 dark:bg-zinc-950"
+      className="border-card-border mx-auto mt-8 flex max-w-xl flex-col gap-4 rounded-2xl border bg-white p-6 text-left shadow-sm sm:p-8 dark:bg-zinc-950"
       noValidate
     >
       <div className="grid gap-4 sm:grid-cols-2">

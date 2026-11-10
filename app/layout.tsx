@@ -1,5 +1,11 @@
 import type { Metadata } from 'next';
-import { Geist, Geist_Mono, Noto_Naskh_Arabic, Noto_Nastaliq_Urdu } from 'next/font/google';
+import {
+  Amiri_Quran,
+  Geist,
+  Geist_Mono,
+  Noto_Naskh_Arabic,
+  Noto_Nastaliq_Urdu,
+} from 'next/font/google';
 import { Footer } from '@/components/layout/Footer';
 import { Navbar } from '@/components/layout/Navbar';
 import { WhatsAppButton } from '@/components/layout/WhatsAppButton';
@@ -18,6 +24,14 @@ const geistMono = Geist_Mono({
 
 const notoNaskhArabic = Noto_Naskh_Arabic({
   variable: '--font-arabic',
+  subsets: ['arabic'],
+});
+
+// Quran text (the ayah reader only): Amiri Quran, an open-licensed Quranic
+// typeface designed for Uthmani script with full tashkeel and waqf marks.
+const amiriQuran = Amiri_Quran({
+  variable: '--font-quran',
+  weight: '400',
   subsets: ['arabic'],
 });
 
@@ -40,7 +54,7 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${geistSans.variable} ${geistMono.variable} ${notoNaskhArabic.variable} ${notoNastaliqUrdu.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${notoNaskhArabic.variable} ${amiriQuran.variable} ${notoNastaliqUrdu.variable} h-full antialiased`}
     >
       <head>
         {/* Applies the saved theme before first paint, avoiding a flash of the wrong theme. */}
