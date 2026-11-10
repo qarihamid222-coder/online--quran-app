@@ -3,7 +3,7 @@ import { CONTACT_EMAIL, PHONE_DISPLAY, whatsappLink } from '@/lib/academy/contac
 
 export function Footer() {
   return (
-    <footer className="bg-surface border-t border-card-border px-4 py-10 sm:px-6">
+    <footer className="bg-surface border-card-border border-t px-4 py-10 sm:px-6">
       <div className="mx-auto flex max-w-5xl flex-col gap-6 sm:flex-row sm:justify-between">
         <div>
           <p className="text-primary text-lg font-semibold">Al-Hameed Online Quran Academy</p>
@@ -27,7 +27,7 @@ export function Footer() {
           <a href={`mailto:${CONTACT_EMAIL}`} className="hover:text-primary">
             {CONTACT_EMAIL}
           </a>
-          <div className="mt-2 flex gap-4">
+          <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1">
             <Link href="/" className="hover:text-primary">
               Home
             </Link>
@@ -36,6 +36,12 @@ export function Footer() {
             </Link>
             <Link href="/quran" className="hover:text-primary">
               Read Quran
+            </Link>
+            <Link href="/privacy-policy" className="hover:text-primary">
+              Privacy Policy
+            </Link>
+            <Link href="/terms-and-conditions" className="hover:text-primary">
+              Terms &amp; Conditions
             </Link>
           </div>
         </div>
