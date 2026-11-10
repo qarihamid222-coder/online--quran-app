@@ -43,6 +43,9 @@ export function Footer() {
             <Link href="/terms-and-conditions" className="hover:text-primary">
               Terms &amp; Conditions
             </Link>
+            <Link href="/data-deletion" className="hover:text-primary">
+              Data Deletion
+            </Link>
           </div>
         </div>
       </div>
