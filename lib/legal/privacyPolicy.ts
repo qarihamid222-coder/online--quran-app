@@ -1,3 +1,4 @@
+import { CONTACT_EMAIL } from '@/lib/academy/contact';
 import type { LegalSection } from '@/components/legal/LegalPage';
 
 export const PRIVACY_UPDATED = '10 November 2026';
@@ -110,7 +111,7 @@ export const PRIVACY_SECTIONS: LegalSection[] = [
     id: 'contact',
     title: 'Contact us about privacy',
     paragraphs: [
-      'If you have a question about this policy or about your information, message us on WhatsApp at +92 323 7185867. Please mention that your message is about privacy, and we will reply as soon as we can.',
+      `If you have a question about this policy or about your information, message us on WhatsApp at +92 323 7185867 or email us at ${CONTACT_EMAIL}. Please mention that your message is about privacy, and we will reply as soon as we can.`,
     ],
   },
 ];

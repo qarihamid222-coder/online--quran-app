@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { PHONE_DISPLAY, whatsappLink } from '@/lib/academy/contact';
+import { CONTACT_EMAIL, PHONE_DISPLAY, whatsappLink } from '@/lib/academy/contact';
 
 export interface LegalSection {
   id: string;
@@ -64,7 +64,7 @@ export function LegalPage({
             {section.paragraphs?.map((paragraph) => (
               <p
                 key={paragraph}
-                className="mt-3 text-base leading-relaxed text-zinc-700 dark:text-zinc-300"
+                className="mt-3 text-base leading-relaxed [overflow-wrap:anywhere] text-zinc-700 dark:text-zinc-300"
               >
                 {paragraph}
               </p>
@@ -96,6 +96,13 @@ export function LegalPage({
             className="text-primary font-medium underline-offset-2 hover:underline"
           >
             {PHONE_DISPLAY}
+          </a>
+          , or email{' '}
+          <a
+            href={`mailto:${CONTACT_EMAIL}`}
+            className="text-primary font-medium [overflow-wrap:anywhere] underline-offset-2 hover:underline"
+          >
+            {CONTACT_EMAIL}
           </a>
           .
         </p>
