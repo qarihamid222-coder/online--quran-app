@@ -34,6 +34,15 @@ describe('validateTrialForm', () => {
     ).toBeDefined();
   });
 
+  it('rejects numbers without a plausible number of digits', () => {
+    for (const whatsappNumber of ['-------', '+ + + + + + +', '123456', '1234567890123456']) {
+      expect(validateTrialForm({ ...VALID_VALUES, whatsappNumber }).whatsappNumber).toBeDefined();
+    }
+    for (const whatsappNumber of ['03237185867', '+92 323 7185867', '+92-323-7185867']) {
+      expect(validateTrialForm({ ...VALID_VALUES, whatsappNumber }).whatsappNumber).toBeUndefined();
+    }
+  });
+
   it('requires a valid student age', () => {
     expect(validateTrialForm({ ...VALID_VALUES, studentAge: '' }).studentAge).toBeDefined();
     expect(validateTrialForm({ ...VALID_VALUES, studentAge: '0' }).studentAge).toBeDefined();

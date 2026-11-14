@@ -7,7 +7,7 @@ export function CourseCard({ course }: { course: Course }) {
   return (
     <li className="reveal group border-card-border bg-background hover:border-accent/70 flex flex-col overflow-hidden rounded-3xl border shadow-sm transition duration-300 hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-blue-900/10">
       {course.image ? (
-        <div className="relative h-48 w-full overflow-hidden">
+        <div className="relative aspect-video w-full overflow-hidden">
           <Image
             src={course.image.src}
             alt={course.image.alt}
@@ -23,7 +23,7 @@ export function CourseCard({ course }: { course: Course }) {
       ) : (
         <ImagePlaceholder
           label="Photo coming soon"
-          className="h-48 w-full rounded-none border-x-0 border-t-0"
+          className="aspect-video w-full rounded-none border-x-0 border-t-0"
         />
       )}
       <div className="flex flex-1 flex-col gap-4 p-6">
