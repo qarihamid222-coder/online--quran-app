@@ -71,7 +71,7 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
         {/* A thin, site-wide navy-and-gold accent line. */}
         <div
           aria-hidden="true"
-          className="from-heading via-accent to-heading h-1 w-full bg-gradient-to-r"
+          className="from-navy-1 via-accent to-navy-1 h-1 w-full bg-gradient-to-r"
         />
         <a href="#main" className="skip-link">
           Skip to main content

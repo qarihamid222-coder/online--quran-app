@@ -6,25 +6,27 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-  --background: #f7f9fd;
+  --background: #faf7f0;
   --foreground: #171717;
   /* Academy palette: professional blue (primary), gold (accent), red (used
      sparingly, e.g. trial badges), a very pale blue page background, and two
      alternating section tones (white / soft blue) so no section reads as a
      large block of saturated color. */
-  --primary: #2563eb;
+  --primary: #1e4a9a;
   --primary-foreground: #ffffff;
   --accent: #c9a44c;
   --accent-foreground: #171717;
   --danger: #b91c1c;
   --danger-foreground: #ffffff;
   --surface: #ffffff;
-  --surface-soft: #edf3fc;
+  --surface-soft: #f3eee2;
   /* Premium CTA navy and an AA-contrast gold for small gold text. */
   --cta: #12305f;
+  --navy-1: #12305f;
+  --navy-2: #0b2447;
   --gold-text: #7a5c14;
-  --heading: #173b67;
-  --card-border: #bfdbfe;
+  --heading: #0f2a52;
+  --card-border: #e3dac3;
   /* Quran reader: Arabic and Urdu translation get their own colors. */
   --arabic-text: #0b3d2e;
   --urdu-text: #7c2d12;
@@ -42,6 +44,8 @@
   --surface: #10213a;
   --surface-soft: #13263f;
   --cta: #2f62c4;
+  --navy-1: #12305f;
+  --navy-2: #0b2447;
   --gold-text: #d4b45e;
   --heading: #bfdbfe;
   --card-border: #1e3a5f;
@@ -62,6 +66,8 @@
   --color-surface-soft: var(--surface-soft);
   --color-heading: var(--heading);
   --color-cta: var(--cta);
+  --color-navy-1: var(--navy-1);
+  --color-navy-2: var(--navy-2);
   --color-gold-text: var(--gold-text);
   --color-card-border: var(--card-border);
   --color-arabic-text: var(--arabic-text);

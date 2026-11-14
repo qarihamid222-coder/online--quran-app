@@ -73,7 +73,7 @@ export function Hero() {
 
           <h1
             style={{ '--delay': '0.2s' } as CSSProperties}
-            className="rise font-display text-heading mt-6 text-5xl leading-[1.05] font-semibold tracking-tight sm:text-6xl lg:text-7xl"
+            className="rise font-display text-heading mt-7 text-5xl leading-[1.08] font-semibold tracking-tight sm:text-6xl lg:text-7xl"
           >
             Learn the <span className="text-primary italic">Quran</span>, beautifully
             <span className="text-accent">.</span>
@@ -82,12 +82,12 @@ export function Hero() {
           <p
             dir="rtl"
             lang="ur"
-            className="font-nastaliq mt-4 text-xl leading-loose text-zinc-700 sm:text-2xl dark:text-zinc-300"
+            className="font-nastaliq text-heading mt-5 text-2xl leading-[2.2] font-medium sm:text-3xl dark:text-zinc-200"
           >
             قرآن سیکھیں، گھر بیٹھے، آن لائن
           </p>
 
-          <p className="mx-auto mt-4 max-w-xl text-lg leading-relaxed text-zinc-600 lg:mx-0 dark:text-zinc-400">
+          <p className="mx-auto mt-3 max-w-xl text-lg leading-8 text-zinc-600 lg:mx-0 dark:text-zinc-400">
             Noorani Qaida, Nazra, Tajweed, Hifz, and Arabic — live one-on-one classes with qualified
             teachers, for children, adults, and beginners, from the comfort of home.
           </p>
@@ -102,16 +102,23 @@ export function Hero() {
               )}
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-cta text-primary-foreground ring-accent/60 group inline-flex w-full items-center justify-center gap-2 rounded-full px-8 py-4 text-base font-semibold shadow-lg ring-2 shadow-blue-900/15 ring-offset-2 ring-offset-transparent transition hover:-translate-y-0.5 hover:shadow-xl sm:w-auto"
+              className="group relative inline-flex w-full items-center justify-center gap-3 overflow-hidden rounded-full bg-gradient-to-b from-[#e8cd7a] via-[#d4b45e] to-[#b8902e] py-2 pr-2 pl-8 text-base font-bold text-[#0b2447] shadow-[0_14px_32px_-10px_rgba(184,144,46,0.85)] ring-1 ring-[#8a6a1c]/40 transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_20px_40px_-10px_rgba(184,144,46,0.95)] sm:w-auto"
             >
-              Start Free 3-Day Trial
-              <span aria-hidden="true" className="transition-transform group-hover:translate-x-1">
+              <span
+                aria-hidden="true"
+                className="absolute inset-y-0 -left-1/3 w-1/4 -skew-x-12 bg-white/40 opacity-0 blur-md transition-all duration-700 group-hover:left-[110%] group-hover:opacity-100 motion-reduce:hidden"
+              />
+              <span className="relative py-2">Start Free 3-Day Trial</span>
+              <span
+                aria-hidden="true"
+                className="relative grid size-11 place-items-center rounded-full bg-[#0b2447] text-lg text-[#e8cd7a] transition-transform duration-300 group-hover:translate-x-0.5"
+              >
                 →
               </span>
             </a>
             <Link
               href="#courses"
-              className="border-heading/25 text-heading hover:border-accent hover:bg-accent/10 inline-flex w-full items-center justify-center rounded-full border px-8 py-4 text-base font-semibold transition-colors sm:w-auto dark:border-white/25 dark:text-zinc-100"
+              className="border-heading/25 text-heading hover:border-accent hover:bg-accent/10 inline-flex w-full items-center justify-center rounded-full border px-8 py-[1.1rem] text-base font-semibold transition-colors sm:w-auto dark:border-white/25 dark:text-zinc-100"
             >
               Explore Courses
             </Link>
@@ -132,6 +139,10 @@ export function Hero() {
           style={{ '--delay': '0.3s' } as CSSProperties}
           className="rise relative mx-auto w-full max-w-md lg:max-w-none"
         >
+          <div
+            aria-hidden="true"
+            className="border-accent/50 absolute inset-x-6 -top-4 bottom-4 mx-auto max-w-md rounded-t-[999px] rounded-b-[2rem] border"
+          />
           <div className="from-accent via-accent/40 to-accent/80 relative mx-auto aspect-[4/5] w-full max-w-md rounded-t-[999px] rounded-b-[2rem] bg-gradient-to-b p-1.5 shadow-2xl shadow-blue-900/20">
             {HERO_IMAGE ? (
               <div className="bg-surface relative h-full w-full overflow-hidden rounded-t-[999px] rounded-b-[1.6rem]">
@@ -145,7 +156,7 @@ export function Hero() {
                 />
                 <div
                   aria-hidden="true"
-                  className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent"
+                  className="absolute inset-0 rounded-t-[999px] rounded-b-[1.6rem] bg-gradient-to-t from-[#0b2447]/35 via-transparent to-[#e8cd7a]/10 ring-1 ring-white/40 ring-inset"
                 />
               </div>
             ) : (
@@ -175,6 +186,11 @@ export function Hero() {
           </div>
         </div>
       </div>
+
+      <div
+        aria-hidden="true"
+        className="to-background pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-40 bg-gradient-to-b from-transparent"
+      />
 
       {/* Credibility strip */}
       <div className="mx-auto max-w-6xl px-4 pb-14 sm:px-6 lg:pb-20">

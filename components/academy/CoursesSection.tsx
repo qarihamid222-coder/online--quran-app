@@ -7,6 +7,10 @@ export function CoursesSection() {
     <section id="courses" className="bg-surface relative scroll-mt-16 px-4 py-20 sm:px-6 lg:py-28">
       <div
         aria-hidden="true"
+        className="via-accent/60 absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent to-transparent"
+      />
+      <div
+        aria-hidden="true"
         className="pattern-islamic absolute inset-0 [mask-image:linear-gradient(to_bottom,black,transparent_45%)] opacity-40"
       />
       <div className="relative mx-auto max-w-6xl">

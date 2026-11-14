@@ -29,7 +29,11 @@ export function CourseCard({ course }: { course: Course }) {
       <div className="flex flex-1 flex-col gap-4 p-6">
         <div>
           <h3 className="font-display text-heading text-xl font-semibold">{course.name}</h3>
-          <p dir="rtl" lang="ur" className="font-nastaliq text-primary mt-1 text-lg">
+          <p
+            dir="rtl"
+            lang="ur"
+            className="font-nastaliq text-gold-text mt-1 text-xl leading-loose font-medium"
+          >
             {course.urduName}
           </p>
         </div>

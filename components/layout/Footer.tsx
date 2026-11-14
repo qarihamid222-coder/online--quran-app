@@ -6,7 +6,7 @@ const HEADING_CLASSES = 'text-accent text-xs font-semibold tracking-[0.2em] uppe
 
 export function Footer() {
   return (
-    <footer className="from-heading relative overflow-hidden bg-gradient-to-b to-[#0b2447] text-blue-100">
+    <footer className="from-navy-1 to-navy-2 relative overflow-hidden bg-gradient-to-b text-blue-100">
       <div aria-hidden="true" className="pattern-islamic absolute inset-0 opacity-30" />
       <div
         aria-hidden="true"

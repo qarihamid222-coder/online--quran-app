@@ -3,8 +3,8 @@ import { TrialForm } from './TrialForm';
 
 export function TrialSection() {
   return (
-    <section className="bg-surface-soft px-4 py-20 text-center sm:px-6 lg:py-28">
-      <div className="from-heading relative mx-auto max-w-4xl overflow-hidden rounded-[2rem] bg-gradient-to-br to-[#0b2447] px-6 py-14 shadow-2xl shadow-blue-900/25 sm:px-12">
+    <section className="bg-background px-4 py-20 text-center sm:px-6 lg:py-28">
+      <div className="from-navy-1 to-navy-2 relative mx-auto max-w-4xl overflow-hidden rounded-[2rem] bg-gradient-to-br px-6 py-14 shadow-2xl shadow-blue-900/25 sm:px-12">
         <div aria-hidden="true" className="pattern-islamic absolute inset-0 opacity-50" />
         <div
           aria-hidden="true"
