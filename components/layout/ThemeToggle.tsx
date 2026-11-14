@@ -56,10 +56,8 @@ export function ThemeToggle() {
             aria-label={option.label}
             title={option.label}
             onClick={() => selectMode(option.mode)}
-            className={`flex h-10 w-10 items-center justify-center rounded-full text-lg transition-colors ${
-              isSelected
-                ? 'bg-zinc-900 dark:bg-zinc-50'
-                : 'hover:bg-zinc-100 dark:hover:bg-zinc-800'
+            className={`flex h-9 w-9 items-center justify-center rounded-full text-base transition-colors ${
+              isSelected ? 'bg-primary/15 ring-accent ring-1' : 'hover:bg-primary/10'
             }`}
           >
             <span aria-hidden="true">{option.icon}</span>
