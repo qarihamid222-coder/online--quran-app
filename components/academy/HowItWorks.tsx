@@ -29,7 +29,7 @@ export function HowItWorks() {
           {STEPS.map((step, index) => (
             <li
               key={step.title}
-              className="border-card-border bg-surface relative rounded-3xl border p-8 shadow-sm"
+              className="reveal border-card-border bg-surface relative rounded-3xl border p-8 shadow-sm"
             >
               <span className="font-display text-accent/70 text-6xl leading-none font-semibold">
                 {index + 1}

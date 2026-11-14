@@ -73,8 +73,13 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
           aria-hidden="true"
           className="from-heading via-accent to-heading h-1 w-full bg-gradient-to-r"
         />
+        <a href="#main" className="skip-link">
+          Skip to main content
+        </a>
         <Navbar />
-        <main className="flex flex-1 flex-col">{children}</main>
+        <main id="main" className="flex flex-1 flex-col">
+          {children}
+        </main>
         <Footer />
         <WhatsAppButton />
       </body>

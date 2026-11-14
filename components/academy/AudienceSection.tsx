@@ -63,7 +63,7 @@ export function AudienceSection() {
             {AUDIENCES.map((item) => (
               <div
                 key={item.title}
-                className="border-card-border bg-surface flex gap-4 rounded-2xl border p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg"
+                className="reveal border-card-border bg-surface flex gap-4 rounded-2xl border p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg"
               >
                 <span
                   aria-hidden="true"

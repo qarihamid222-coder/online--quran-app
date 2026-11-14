@@ -5,7 +5,7 @@ import { AUDIENCE_BADGE_CLASSES, AUDIENCE_LABELS, type Course } from '@/lib/acad
 
 export function CourseCard({ course }: { course: Course }) {
   return (
-    <li className="group border-card-border bg-background hover:border-accent/70 flex flex-col overflow-hidden rounded-3xl border shadow-sm transition duration-300 hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-blue-900/10">
+    <li className="reveal group border-card-border bg-background hover:border-accent/70 flex flex-col overflow-hidden rounded-3xl border shadow-sm transition duration-300 hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-blue-900/10">
       {course.image ? (
         <div className="relative h-48 w-full overflow-hidden">
           <Image
@@ -52,7 +52,7 @@ export function CourseCard({ course }: { course: Course }) {
           href={whatsappLink(`Assalam o Alaikum! I'm interested in the ${course.name} course.`)}
           target="_blank"
           rel="noopener noreferrer"
-          className="bg-primary text-primary-foreground hover:bg-heading mt-2 inline-flex w-full items-center justify-center gap-2 rounded-full px-8 py-3.5 text-base font-semibold transition-colors"
+          className="bg-cta text-primary-foreground mt-2 inline-flex w-full items-center justify-center gap-2 rounded-full px-8 py-3.5 text-base font-semibold transition-colors hover:brightness-125"
         >
           Ask on WhatsApp
           <span aria-hidden="true" className="transition-transform group-hover:translate-x-1">

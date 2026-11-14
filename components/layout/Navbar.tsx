@@ -20,7 +20,7 @@ export function Navbar() {
             <span className="font-display text-heading block text-lg font-semibold tracking-tight sm:text-xl">
               Al-Hameed Academy
             </span>
-            <span className="text-accent-foreground dark:text-accent hidden text-[0.65rem] font-semibold tracking-[0.2em] uppercase sm:block">
+            <span className="text-gold-text hidden text-[0.65rem] font-semibold tracking-[0.2em] uppercase sm:block">
               Online Quran Academy
             </span>
           </span>
@@ -44,7 +44,7 @@ export function Navbar() {
             )}
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-primary text-primary-foreground ring-accent/60 hover:bg-heading ml-2 inline-flex items-center rounded-full px-5 py-2.5 text-sm font-semibold shadow-md ring-1 transition-colors"
+            className="bg-cta text-primary-foreground ring-accent/60 ml-2 inline-flex items-center rounded-full px-5 py-2.5 text-sm font-semibold shadow-md ring-1 transition-colors hover:brightness-125"
           >
             Free Trial
           </a>

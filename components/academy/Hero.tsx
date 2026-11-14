@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ImagePlaceholder } from '@/components/ui/ImagePlaceholder';
@@ -7,7 +8,12 @@ import { HERO_IMAGE } from '@/lib/academy/images';
 
 function CheckIcon() {
   return (
-    <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" className="text-accent size-5 shrink-0">
+    <svg
+      viewBox="0 0 20 20"
+      fill="none"
+      aria-hidden="true"
+      className="text-gold-text size-5 shrink-0"
+    >
       <circle cx="10" cy="10" r="9" stroke="currentColor" strokeWidth="1.5" />
       <path
         d="M6 10.3l2.6 2.6L14 7.5"
@@ -51,18 +57,24 @@ export function Hero() {
           <p
             dir="rtl"
             lang="ar"
-            className="font-quran text-accent text-2xl sm:text-3xl"
+            className="font-quran text-gold-text rise text-2xl sm:text-3xl"
             aria-label="Bismillah ir-Rahman ir-Rahim"
           >
             بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ
           </p>
 
-          <p className="border-accent/40 bg-surface/70 text-heading mt-6 inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-xs font-semibold tracking-[0.18em] uppercase shadow-sm backdrop-blur">
+          <p
+            style={{ '--delay': '0.1s' } as CSSProperties}
+            className="rise border-accent/40 bg-surface/70 text-heading mt-6 inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-xs font-semibold tracking-[0.18em] uppercase shadow-sm backdrop-blur"
+          >
             <span className="bg-accent size-1.5 rounded-full" aria-hidden="true" />
             Al-Hameed Online Quran Academy
           </p>
 
-          <h1 className="font-display text-heading mt-6 text-5xl leading-[1.05] font-semibold tracking-tight sm:text-6xl lg:text-7xl">
+          <h1
+            style={{ '--delay': '0.2s' } as CSSProperties}
+            className="rise font-display text-heading mt-6 text-5xl leading-[1.05] font-semibold tracking-tight sm:text-6xl lg:text-7xl"
+          >
             Learn the <span className="text-primary italic">Quran</span>, beautifully
             <span className="text-accent">.</span>
           </h1>
@@ -80,14 +92,17 @@ export function Hero() {
             teachers, for children, adults, and beginners, from the comfort of home.
           </p>
 
-          <div className="mt-9 flex flex-col items-center gap-4 sm:flex-row lg:items-center">
+          <div
+            style={{ '--delay': '0.35s' } as CSSProperties}
+            className="rise mt-9 flex flex-col items-center gap-4 sm:flex-row lg:items-center"
+          >
             <a
               href={whatsappLink(
                 'Assalam o Alaikum! I would like to start a free 3-day trial class.',
               )}
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-primary text-primary-foreground ring-accent/60 hover:shadow-primary/30 group inline-flex w-full items-center justify-center gap-2 rounded-full px-8 py-4 text-base font-semibold shadow-lg ring-2 shadow-blue-900/15 ring-offset-2 ring-offset-transparent transition hover:-translate-y-0.5 hover:shadow-xl sm:w-auto"
+              className="bg-cta text-primary-foreground ring-accent/60 group inline-flex w-full items-center justify-center gap-2 rounded-full px-8 py-4 text-base font-semibold shadow-lg ring-2 shadow-blue-900/15 ring-offset-2 ring-offset-transparent transition hover:-translate-y-0.5 hover:shadow-xl sm:w-auto"
             >
               Start Free 3-Day Trial
               <span aria-hidden="true" className="transition-transform group-hover:translate-x-1">
@@ -113,7 +128,10 @@ export function Hero() {
         </div>
 
         {/* Mihrab-arch framed photo with a gold ring and two floating cards. */}
-        <div className="relative mx-auto w-full max-w-md lg:max-w-none">
+        <div
+          style={{ '--delay': '0.3s' } as CSSProperties}
+          className="rise relative mx-auto w-full max-w-md lg:max-w-none"
+        >
           <div className="from-accent via-accent/40 to-accent/80 relative mx-auto aspect-[4/5] w-full max-w-md rounded-t-[999px] rounded-b-[2rem] bg-gradient-to-b p-1.5 shadow-2xl shadow-blue-900/20">
             {HERO_IMAGE ? (
               <div className="bg-surface relative h-full w-full overflow-hidden rounded-t-[999px] rounded-b-[1.6rem]">

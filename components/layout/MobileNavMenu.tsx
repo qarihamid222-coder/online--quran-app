@@ -55,7 +55,7 @@ export function MobileNavMenu() {
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => setIsOpen(false)}
-              className="bg-primary text-primary-foreground ring-accent/60 mx-4 mt-3 inline-flex items-center justify-center rounded-full px-6 py-3.5 text-base font-semibold ring-1"
+              className="bg-cta text-primary-foreground ring-accent/60 mx-4 mt-3 inline-flex items-center justify-center rounded-full px-6 py-3.5 text-base font-semibold ring-1"
             >
               Start Free 3-Day Trial
             </a>

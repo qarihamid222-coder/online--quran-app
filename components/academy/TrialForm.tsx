@@ -204,7 +204,7 @@ export function TrialForm() {
 
       <button
         type="submit"
-        className="bg-primary text-primary-foreground mt-2 inline-flex items-center justify-center rounded-full px-8 py-3.5 text-base font-semibold transition-opacity hover:opacity-90"
+        className="bg-cta text-primary-foreground mt-2 inline-flex items-center justify-center rounded-full px-8 py-3.5 text-base font-semibold transition-opacity hover:opacity-90"
       >
         Send Enquiry on WhatsApp
       </button>
