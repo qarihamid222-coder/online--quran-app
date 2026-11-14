@@ -41,12 +41,12 @@ export function LegalPage({
         className="bg-surface-soft border-card-border mt-6 rounded-xl border p-4"
       >
         <p className="text-heading text-sm font-semibold">On this page</p>
-        <ol className="mt-2 grid list-decimal gap-x-6 gap-y-1 pl-5 text-sm sm:grid-cols-2">
+        <ol className="mt-1 grid list-decimal gap-x-6 pl-5 text-sm sm:grid-cols-2">
           {sections.map((section) => (
             <li key={section.id}>
               <a
                 href={`#${section.id}`}
-                className="text-primary underline-offset-2 hover:underline"
+                className="text-primary inline-flex min-h-11 items-center underline-offset-2 hover:underline"
               >
                 {section.title}
               </a>
@@ -109,10 +109,16 @@ export function LegalPage({
       </aside>
 
       <nav className="border-card-border mt-8 flex flex-wrap items-center justify-between gap-4 border-t pt-6 text-sm font-medium">
-        <Link href="/" className="hover:text-primary text-zinc-600 dark:text-zinc-400">
+        <Link
+          href="/"
+          className="hover:text-primary inline-flex min-h-11 items-center text-zinc-600 dark:text-zinc-400"
+        >
           ← Back to home
         </Link>
-        <Link href={otherPage.href} className="text-primary hover:underline">
+        <Link
+          href={otherPage.href}
+          className="text-primary inline-flex min-h-11 items-center hover:underline"
+        >
           {otherPage.label} →
         </Link>
       </nav>

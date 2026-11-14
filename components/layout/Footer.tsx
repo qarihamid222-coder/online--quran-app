@@ -2,6 +2,8 @@ import Link from 'next/link';
 import { CONTACT_EMAIL, PHONE_DISPLAY, whatsappLink } from '@/lib/academy/contact';
 
 const LINK_CLASSES = 'text-blue-100/80 transition-colors hover:text-accent';
+// Legal links get a 44px-tall tap area (padding, not extra visual size).
+const LEGAL_LINK_PAD = 'inline-flex min-h-11 items-center px-1.5';
 const HEADING_CLASSES = 'text-accent text-xs font-semibold tracking-[0.2em] uppercase';
 
 export function Footer() {
@@ -101,18 +103,18 @@ export function Footer() {
       </div>
 
       <div className="relative border-t border-white/10">
-        <div className="mx-auto flex max-w-6xl flex-col gap-3 px-4 py-6 text-xs text-blue-100/60 sm:px-6 md:flex-row md:items-center md:justify-between">
+        <div className="mx-auto flex max-w-6xl flex-col gap-3 px-4 pt-6 pb-24 text-xs text-blue-100/60 sm:px-6 md:flex-row md:items-center md:justify-between">
           <p>
             &copy; {new Date().getFullYear()} Al-Hameed Online Quran Academy. All rights reserved.
           </p>
-          <div className="flex flex-wrap gap-x-5 gap-y-1">
-            <Link href="/privacy-policy" className={LINK_CLASSES}>
+          <div className="flex flex-wrap gap-x-2 gap-y-0 sm:gap-x-3">
+            <Link href="/privacy-policy" className={`${LINK_CLASSES} ${LEGAL_LINK_PAD}`}>
               Privacy Policy
             </Link>
-            <Link href="/terms-and-conditions" className={LINK_CLASSES}>
+            <Link href="/terms-and-conditions" className={`${LINK_CLASSES} ${LEGAL_LINK_PAD}`}>
               Terms &amp; Conditions
             </Link>
-            <Link href="/data-deletion" className={LINK_CLASSES}>
+            <Link href="/data-deletion" className={`${LINK_CLASSES} ${LEGAL_LINK_PAD}`}>
               Data Deletion
             </Link>
           </div>

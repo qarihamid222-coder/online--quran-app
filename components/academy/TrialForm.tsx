@@ -13,7 +13,23 @@ import {
 } from '@/lib/academy/trialForm';
 
 const FIELD_CLASSES =
-  'w-full rounded-lg border border-card-border bg-white px-4 py-2.5 text-base text-zinc-900 placeholder:text-zinc-400 focus:border-primary focus:outline-none dark:bg-zinc-900 dark:text-zinc-100';
+  'scroll-mt-28 w-full rounded-lg border border-card-border bg-white px-4 py-2.5 text-base text-zinc-900 placeholder:text-zinc-400 focus:border-primary focus:outline-none dark:bg-zinc-900 dark:text-zinc-100';
+// Page order of the validated fields, and the input id of each, so focus can
+// jump to the first invalid one after a failed submit.
+const FIELD_ORDER = [
+  'studentName',
+  'whatsappNumber',
+  'studentAge',
+  'courseSlug',
+  'preferredLanguage',
+] as const satisfies readonly (keyof TrialFormValues)[];
+const FIELD_IDS: Record<(typeof FIELD_ORDER)[number], string> = {
+  studentName: 'trial-student-name',
+  whatsappNumber: 'trial-whatsapp',
+  studentAge: 'trial-age',
+  courseSlug: 'trial-course',
+  preferredLanguage: 'trial-language',
+};
 const LABEL_CLASSES = 'text-sm font-medium text-zinc-700 dark:text-zinc-300';
 
 export function TrialForm() {
@@ -34,6 +50,9 @@ export function TrialForm() {
 
     if (Object.keys(nextErrors).length > 0) {
       setStatus('idle');
+      // Move keyboard/screen-reader focus to the first invalid field, in page order.
+      const firstInvalid = FIELD_ORDER.find((key) => nextErrors[key]);
+      if (firstInvalid) document.getElementById(FIELD_IDS[firstInvalid])?.focus();
       return;
     }
 
@@ -57,6 +76,7 @@ export function TrialForm() {
       onSubmit={handleSubmit}
       className="border-card-border mx-auto mt-8 flex max-w-xl flex-col gap-4 rounded-2xl border bg-white p-6 text-left shadow-sm sm:p-8 dark:bg-zinc-950"
       noValidate
+      data-hide-whatsapp-fab
     >
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="flex flex-col gap-1.5">
