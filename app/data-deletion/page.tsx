@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 const UPDATED = '10 November 2026';
 
-// The email option is shown only once a real address replaces the placeholder in lib/academy/contact.ts.
+// The email option is hidden if CONTACT_EMAIL in lib/academy/contact.ts is ever reset to an @example.com placeholder.
 const HAS_EMAIL = !CONTACT_EMAIL.toLowerCase().endsWith('@example.com');
 
 const REQUEST_MESSAGE = [
@@ -111,7 +111,7 @@ export default function DataDeletionPage() {
                 Write to{' '}
                 <a
                   href={`mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent('Data deletion request')}`}
-                  className="text-primary font-medium underline-offset-2 hover:underline"
+                  className="text-primary font-medium [overflow-wrap:anywhere] underline-offset-2 hover:underline"
                 >
                   {CONTACT_EMAIL}
                 </a>{' '}

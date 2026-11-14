@@ -67,8 +67,24 @@ export function Footer() {
             >
               WhatsApp: {PHONE_DISPLAY}
             </a>
-            <a href={`mailto:${CONTACT_EMAIL}`} className={LINK_CLASSES}>
-              {CONTACT_EMAIL}
+            <a
+              href={`mailto:${CONTACT_EMAIL}`}
+              className={`${LINK_CLASSES} flex items-start gap-2`}
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.6"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+                className="text-accent mt-0.5 size-4 shrink-0"
+              >
+                <rect x="3" y="5" width="18" height="14" rx="2" />
+                <path d="m3 7 9 6 9-6" />
+              </svg>
+              <span className="min-w-0 [overflow-wrap:anywhere]">{CONTACT_EMAIL}</span>
             </a>
             <a
               href={whatsappLink(
