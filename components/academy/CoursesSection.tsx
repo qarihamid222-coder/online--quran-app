@@ -1,15 +1,21 @@
 import { COURSES } from '@/lib/academy/courses';
 import { CourseCard } from './CourseCard';
+import { SectionHeading } from './SectionHeading';
 
 export function CoursesSection() {
   return (
-    <section id="courses" className="bg-surface px-4 py-16 sm:px-6">
-      <div className="mx-auto max-w-5xl">
-        <h2 className="text-heading text-center text-3xl font-semibold sm:text-4xl">Our Courses</h2>
-        <p className="mx-auto mt-3 max-w-2xl text-center text-base text-zinc-600 dark:text-zinc-400">
-          Live, one-on-one online classes for every stage of the Quran journey.
-        </p>
-        <ul className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    <section id="courses" className="bg-surface relative scroll-mt-16 px-4 py-20 sm:px-6 lg:py-28">
+      <div
+        aria-hidden="true"
+        className="pattern-islamic absolute inset-0 [mask-image:linear-gradient(to_bottom,black,transparent_45%)] opacity-40"
+      />
+      <div className="relative mx-auto max-w-6xl">
+        <SectionHeading
+          eyebrow="Our curriculum"
+          title="Courses for every stage of the journey"
+          description="Live, one-on-one online classes — from your first Arabic letters to memorizing the complete Quran."
+        />
+        <ul className="mt-14 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {COURSES.map((course) => (
             <CourseCard key={course.slug} course={course} />
           ))}

@@ -5,31 +5,37 @@ import { AUDIENCE_BADGE_CLASSES, AUDIENCE_LABELS, type Course } from '@/lib/acad
 
 export function CourseCard({ course }: { course: Course }) {
   return (
-    <li className="border-card-border flex flex-col overflow-hidden rounded-2xl border bg-white shadow-sm dark:bg-zinc-950">
+    <li className="group border-card-border bg-background hover:border-accent/70 flex flex-col overflow-hidden rounded-3xl border shadow-sm transition duration-300 hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-blue-900/10">
       {course.image ? (
-        <div className="relative h-40 w-full">
+        <div className="relative h-48 w-full overflow-hidden">
           <Image
             src={course.image.src}
             alt={course.image.alt}
             fill
             sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-            className="object-cover"
+            className="object-cover transition-transform duration-500 group-hover:scale-105"
+          />
+          <div
+            aria-hidden="true"
+            className="from-accent via-accent/50 absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r to-transparent"
           />
         </div>
       ) : (
         <ImagePlaceholder
           label="Photo coming soon"
-          className="h-40 w-full rounded-none border-x-0 border-t-0"
+          className="h-48 w-full rounded-none border-x-0 border-t-0"
         />
       )}
-      <div className="flex flex-1 flex-col gap-3 p-6">
+      <div className="flex flex-1 flex-col gap-4 p-6">
         <div>
-          <h3 className="text-heading text-lg font-semibold">{course.name}</h3>
-          <p dir="rtl" lang="ur" className="font-nastaliq text-primary mt-0.5 text-base">
+          <h3 className="font-display text-heading text-xl font-semibold">{course.name}</h3>
+          <p dir="rtl" lang="ur" className="font-nastaliq text-primary mt-1 text-lg">
             {course.urduName}
           </p>
         </div>
-        <p className="flex-1 text-sm text-zinc-600 dark:text-zinc-400">{course.description}</p>
+        <p className="flex-1 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
+          {course.description}
+        </p>
         <div className="flex flex-wrap gap-2">
           {course.audience.map((tag) => (
             <span
@@ -46,9 +52,12 @@ export function CourseCard({ course }: { course: Course }) {
           href={whatsappLink(`Assalam o Alaikum! I'm interested in the ${course.name} course.`)}
           target="_blank"
           rel="noopener noreferrer"
-          className="bg-primary text-primary-foreground mt-2 inline-flex w-full items-center justify-center rounded-full px-8 py-3.5 text-base font-semibold transition-opacity hover:opacity-90"
+          className="bg-primary text-primary-foreground hover:bg-heading mt-2 inline-flex w-full items-center justify-center gap-2 rounded-full px-8 py-3.5 text-base font-semibold transition-colors"
         >
           Ask on WhatsApp
+          <span aria-hidden="true" className="transition-transform group-hover:translate-x-1">
+            →
+          </span>
         </a>
       </div>
     </li>

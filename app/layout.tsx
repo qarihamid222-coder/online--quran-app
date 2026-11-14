@@ -5,6 +5,7 @@ import {
   Geist_Mono,
   Noto_Naskh_Arabic,
   Noto_Nastaliq_Urdu,
+  Playfair_Display,
 } from 'next/font/google';
 import { Footer } from '@/components/layout/Footer';
 import { Navbar } from '@/components/layout/Navbar';
@@ -19,6 +20,12 @@ const geistSans = Geist({
 
 const geistMono = Geist_Mono({
   variable: '--font-geist-mono',
+  subsets: ['latin'],
+});
+
+// Display serif used only for premium headings on the home page.
+const playfair = Playfair_Display({
+  variable: '--font-display',
   subsets: ['latin'],
 });
 
@@ -54,7 +61,7 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${geistSans.variable} ${geistMono.variable} ${notoNaskhArabic.variable} ${amiriQuran.variable} ${notoNastaliqUrdu.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} ${notoNaskhArabic.variable} ${amiriQuran.variable} ${notoNastaliqUrdu.variable} h-full antialiased`}
     >
       <head>
         {/* Applies the saved theme before first paint, avoiding a flash of the wrong theme. */}
