@@ -13,24 +13,24 @@ export function Navbar() {
       <nav className="relative mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
         <Link
           href="/"
-          className="group flex shrink-0 items-center gap-3"
+          className="group flex min-w-0 shrink items-center gap-2 sm:gap-3"
           aria-label="Al-Hameed Online Quran Academy — home"
         >
-          <span className="ring-accent/70 flex h-12 shrink-0 items-center rounded-xl bg-white px-1.5 shadow-sm ring-1">
+          <span className="ring-accent/70 flex h-10 shrink-0 items-center rounded-xl bg-white px-1 shadow-sm ring-1 sm:h-12 sm:px-1.5">
             <Image
               src={ACADEMY_LOGO.mark.src}
               alt=""
               width={ACADEMY_LOGO.mark.width}
               height={ACADEMY_LOGO.mark.height}
               priority
-              className="h-10 w-auto"
+              className="h-8 w-auto sm:h-10"
             />
           </span>
           <span className="leading-none">
-            <span className="font-display text-heading block text-xl font-semibold tracking-tight sm:text-2xl">
+            <span className="font-display text-heading block text-lg font-semibold tracking-tight sm:text-2xl">
               Al-Hameed
             </span>
-            <span className="text-gold-text mt-1 block text-[0.62rem] font-semibold tracking-[0.22em] uppercase sm:text-[0.66rem]">
+            <span className="text-gold-text mt-1 block text-[0.55rem] font-semibold tracking-[0.14em] whitespace-nowrap uppercase sm:text-[0.66rem] sm:tracking-[0.22em]">
               Online Quran Academy
             </span>
           </span>
