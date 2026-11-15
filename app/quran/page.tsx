@@ -16,7 +16,7 @@ import type { SurahSummary } from '@/lib/quran';
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: 'Surahs — Online Quran',
+  title: 'Surahs',
   description: 'Browse all 114 surahs of the Holy Quran.',
 };
 

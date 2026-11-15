@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { CONTACT_EMAIL, PHONE_DISPLAY, whatsappLink } from '@/lib/academy/contact';
 
 export const metadata: Metadata = {
-  title: 'Data Deletion Instructions — Al-Hameed Online Quran Academy',
+  title: 'Data Deletion Instructions',
   description:
     'How students and parents can ask Al-Hameed Online Quran Academy to delete their personal information.',
 };

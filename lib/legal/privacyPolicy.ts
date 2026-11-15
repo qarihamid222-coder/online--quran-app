@@ -1,7 +1,7 @@
 import { CONTACT_EMAIL } from '@/lib/academy/contact';
 import type { LegalSection } from '@/components/legal/LegalPage';
 
-export const PRIVACY_UPDATED = '10 November 2026';
+export const PRIVACY_UPDATED = '15 November 2026';
 
 export const PRIVACY_INTRO =
   'Al-Hameed Online Quran Academy teaches the Quran and related subjects online to students of all ages around the world. This page explains what personal information we collect when you contact us, how we use it, and the choices you have. We have written it in plain language and have tried to describe only what actually happens.';
@@ -61,6 +61,7 @@ export const PRIVACY_SECTIONS: LegalSection[] = [
     items: [
       'With the teacher assigned to the student, so that they can prepare and teach the class',
       'With WhatsApp (Meta), because messages are sent and received through WhatsApp and are handled under its own terms and privacy policy',
+      'With OpenAI, only the text you type into the website chat assistant, so that it can write a reply (see "The website chat assistant" below)',
       'Where the law requires us to disclose it, or to protect the safety of a student',
     ],
   },
@@ -86,6 +87,14 @@ export const PRIVACY_SECTIONS: LegalSection[] = [
     title: 'Quran text and audio from other services',
     paragraphs: [
       'The Quran reader loads Arabic text and translations from the Al Quran Cloud service, and verse recitation audio from the Islamic Network audio service. When you read or play audio, your device or our server contacts those services, which may see technical details such as your IP address. They operate under their own privacy practices.',
+    ],
+  },
+  {
+    id: 'ai-assistant',
+    title: 'The website chat assistant',
+    paragraphs: [
+      'The website has a chat assistant that answers general questions about our courses and the free trial. What you type in the chat is sent securely to OpenAI, an AI service provider, so that it can write a reply. We do not store your chat on our servers, and we do not link it to your enquiry or to your name.',
+      "OpenAI handles that text under its own privacy practices and may keep it for a limited period, for example to prevent misuse. Please do not type personal details such as your phone number, address or your child's full name in the chat. Use the enquiry form or WhatsApp for that instead. The assistant is automated and can make mistakes, so please confirm fees, timings and admission details with us on WhatsApp.",
     ],
   },
   {

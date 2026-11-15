@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import {
   Amiri_Quran,
   Geist,
@@ -9,6 +9,7 @@ import {
 } from 'next/font/google';
 import { Footer } from '@/components/layout/Footer';
 import { Navbar } from '@/components/layout/Navbar';
+import { ChatWidget } from '@/components/chat/ChatWidget';
 import { WhatsAppButton } from '@/components/layout/WhatsAppButton';
 import { THEME_INIT_SCRIPT } from '@/lib/theme';
 import './globals.css';
@@ -50,10 +51,36 @@ const notoNastaliqUrdu = Noto_Nastaliq_Urdu({
   subsets: ['arabic'],
 });
 
+const DESCRIPTION =
+  'Learn Noorani Qaida, Nazra Quran, Tajweed, Hifz-ul-Quran, and Arabic online — live classes for children, adults, and beginners. Start your free 3-day trial today.';
+
 export const metadata: Metadata = {
-  title: 'Al-Hameed Online Quran Academy',
-  description:
-    'Learn Noorani Qaida, Nazra Quran, Tajweed, Hifz-ul-Quran, and Arabic online — live classes for children, adults, and beginners. Start your free 3-day trial today.',
+  // Page titles are suffixed with the brand name via this template, so the
+  // academy is named the same way on every page and in search results.
+  title: {
+    default: 'Al-Hameed Online Quran Academy',
+    template: '%s | Al-Hameed Online Quran Academy',
+  },
+  description: DESCRIPTION,
+  applicationName: 'Al-Hameed Online Quran Academy',
+  openGraph: {
+    type: 'website',
+    siteName: 'Al-Hameed Online Quran Academy',
+    title: 'Al-Hameed Online Quran Academy',
+    description: DESCRIPTION,
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Al-Hameed Online Quran Academy',
+    description: DESCRIPTION,
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#faf7f0' },
+    { media: '(prefers-color-scheme: dark)', color: '#0b1424' },
+  ],
 };
 
 export default function RootLayout({ children }: LayoutProps<'/'>) {
@@ -82,6 +109,7 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
         </main>
         <Footer />
         <WhatsAppButton />
+        <ChatWidget />
       </body>
     </html>
   );

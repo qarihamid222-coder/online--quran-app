@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { TOTAL_JUZ } from '@/lib/quran';
 
 export const metadata: Metadata = {
-  title: 'Juz — Online Quran',
+  title: 'Juz',
   description: 'Browse the Quran by juz (para), all 30 parts.',
 };
 

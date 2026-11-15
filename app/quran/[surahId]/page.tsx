@@ -29,11 +29,11 @@ export async function generateMetadata({
   const surahNumber = parseSurahNumber(surahId);
 
   if (surahNumber === null) {
-    return { title: 'Surah not found — Online Quran' };
+    return { title: 'Surah not found' };
   }
 
   return {
-    title: `Surah ${surahNumber} — Online Quran`,
+    title: `Surah ${surahNumber}`,
     description: `Read surah ${surahNumber} of the Holy Quran with Arabic text and translations.`,
   };
 }

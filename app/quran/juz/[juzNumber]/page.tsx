@@ -30,11 +30,11 @@ export async function generateMetadata({
   const juzNumber = parseJuzNumber(juzId);
 
   if (juzNumber === null) {
-    return { title: 'Juz not found — Online Quran' };
+    return { title: 'Juz not found' };
   }
 
   return {
-    title: `Juz ${juzNumber} — Online Quran`,
+    title: `Juz ${juzNumber}`,
     description: `Read juz ${juzNumber} of the Holy Quran with Arabic text and translations.`,
   };
 }

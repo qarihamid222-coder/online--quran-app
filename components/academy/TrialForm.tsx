@@ -76,7 +76,7 @@ export function TrialForm() {
       onSubmit={handleSubmit}
       className="border-card-border mx-auto mt-8 flex max-w-xl flex-col gap-4 rounded-2xl border bg-white p-6 text-left shadow-sm sm:p-8 dark:bg-zinc-950"
       noValidate
-      data-hide-whatsapp-fab
+      data-hide-floating-actions
     >
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="flex flex-col gap-1.5">

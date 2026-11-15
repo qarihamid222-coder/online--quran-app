@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { BookmarksList } from '@/components/bookmarks/BookmarksList';
 
 export const metadata: Metadata = {
-  title: 'Bookmarks — Online Quran',
+  title: 'Bookmarks',
   description: 'Ayahs you have bookmarked for later.',
 };
 

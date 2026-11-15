@@ -3,7 +3,7 @@ import { LegalPage } from '@/components/legal/LegalPage';
 import { TERMS_INTRO, TERMS_SECTIONS, TERMS_UPDATED } from '@/lib/legal/terms';
 
 export const metadata: Metadata = {
-  title: 'Terms & Conditions — Al-Hameed Online Quran Academy',
+  title: 'Terms & Conditions',
   description:
     'Terms for online classes, free trial, scheduling, cancellations and communication at Al-Hameed Online Quran Academy.',
 };
