@@ -70,7 +70,9 @@ export default async function JuzReaderPage({ params }: PageProps<'/quran/juz/[j
     <article className="mx-auto w-full max-w-3xl px-4 py-10 sm:px-6">
       <header className="border-card-border flex flex-col items-center gap-2 border-b pb-6 text-center">
         <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400">Juz</p>
-        <h1 className="text-heading text-3xl font-semibold">Juz {juz.number}</h1>
+        <h1 className="font-display text-heading text-4xl font-semibold tracking-tight">
+          Juz {juz.number}
+        </h1>
       </header>
 
       {juz.ayahs.length === 0 ? (
@@ -117,7 +119,7 @@ export default async function JuzReaderPage({ params }: PageProps<'/quran/juz/[j
         {previousJuz ? (
           <Link
             href={`/quran/juz/${previousJuz}`}
-            className="text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-50"
+            className="text-heading hover:text-primary text-sm font-semibold dark:text-zinc-300 dark:hover:text-white"
           >
             ← Juz {previousJuz}
           </Link>
@@ -126,14 +128,14 @@ export default async function JuzReaderPage({ params }: PageProps<'/quran/juz/[j
         )}
         <Link
           href="/quran/juz"
-          className="text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-50"
+          className="text-heading hover:text-primary text-sm font-semibold dark:text-zinc-300 dark:hover:text-white"
         >
           All Juz
         </Link>
         {nextJuz ? (
           <Link
             href={`/quran/juz/${nextJuz}`}
-            className="text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-50"
+            className="text-heading hover:text-primary text-sm font-semibold dark:text-zinc-300 dark:hover:text-white"
           >
             Juz {nextJuz} →
           </Link>

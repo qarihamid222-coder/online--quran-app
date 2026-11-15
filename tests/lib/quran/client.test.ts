@@ -298,6 +298,30 @@ describe('isValidJuzNumber', () => {
   });
 });
 
+/** Mocks the real API shape: one `/juz/{n}/{edition}` request per edition. */
+function stubJuzFetch(editions: Record<string, unknown[] | 'not-found'>) {
+  const fetchMock = vi.fn(async (url: string) => {
+    const edition = Object.keys(editions).find((id) => url.endsWith(`/${id}`));
+    const ayahs = edition ? editions[edition] : undefined;
+    if (!edition || ayahs === 'not-found') {
+      return jsonResponse(
+        { code: 404, status: 'RESOURCE_NOT_FOUND', data: 'Not found.' },
+        { ok: false, status: 404 },
+      );
+    }
+    return jsonResponse({
+      code: 200,
+      status: 'OK',
+      data: { number: 30, ayahs, edition: { identifier: edition } },
+    });
+  });
+  vi.stubGlobal('fetch', fetchMock);
+  return fetchMock;
+}
+
+const NAAS_SURAH = { number: 114, name: 'سُورَةُ النَّاسِ', englishName: 'An-Naas' };
+const FALAQ_SURAH = { number: 113, name: 'سُورَةُ الْفَلَقِ', englishName: 'Al-Falaq' };
+
 describe('fetchJuz', () => {
   it('rejects invalid juz numbers without calling fetch', async () => {
     const fetchMock = vi.fn();
@@ -308,76 +332,54 @@ describe('fetchJuz', () => {
     expect(fetchMock).not.toHaveBeenCalled();
   });
 
-  it('maps ayahs spanning multiple surahs, tagging each with its surah', async () => {
-    const fetchMock = vi.fn().mockResolvedValue(
-      jsonResponse({
-        code: 200,
-        status: 'OK',
-        data: [
-          {
-            number: 30,
-            edition: { identifier: 'quran-uthmani' },
-            ayahs: [
-              {
-                number: 6231,
-                numberInSurah: 1,
-                text: 'قُلْ أَعُوذُ بِرَبِّ النَّاسِ',
-                surah: { number: 114, name: 'سُورَةُ النَّاسِ', englishName: 'An-Naas' },
-              },
-              {
-                number: 6210,
-                numberInSurah: 1,
-                text: 'قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ',
-                surah: { number: 113, name: 'سُورَةُ الْفَلَقِ', englishName: 'Al-Falaq' },
-              },
-            ],
-          },
-          {
-            number: 30,
-            edition: { identifier: 'en.sahih' },
-            ayahs: [
-              {
-                number: 6231,
-                numberInSurah: 1,
-                text: 'Say, "I seek refuge in the Lord of mankind,',
-                surah: { number: 114, name: 'An-Naas', englishName: 'An-Naas' },
-              },
-              {
-                number: 6210,
-                numberInSurah: 1,
-                text: 'Say, "I seek refuge in the Lord of daybreak',
-                surah: { number: 113, name: 'Al-Falaq', englishName: 'Al-Falaq' },
-              },
-            ],
-          },
-          {
-            number: 30,
-            edition: { identifier: 'ur.jalandhry' },
-            ayahs: [
-              {
-                number: 6231,
-                numberInSurah: 1,
-                text: 'اردو ترجمہ الناس 1',
-                surah: { number: 114, name: 'An-Naas', englishName: 'An-Naas' },
-              },
-              {
-                number: 6210,
-                numberInSurah: 1,
-                text: 'اردو ترجمہ الفلق 1',
-                surah: { number: 113, name: 'Al-Falaq', englishName: 'Al-Falaq' },
-              },
-            ],
-          },
-        ],
-      }),
-    );
-    vi.stubGlobal('fetch', fetchMock);
+  it('requests each edition from the per-edition endpoint the API actually serves', async () => {
+    const fetchMock = stubJuzFetch({
+      'quran-uthmani': [{ number: 6231, numberInSurah: 1, text: 'قُلْ', surah: NAAS_SURAH }],
+      'en.sahih': [],
+      'ur.jalandhry': [],
+    });
+
+    await fetchJuz(4);
+
+    const urls = fetchMock.mock.calls.map(([url]) => url).sort();
+    expect(urls).toEqual([
+      'https://api.alquran.cloud/v1/juz/4/en.sahih',
+      'https://api.alquran.cloud/v1/juz/4/quran-uthmani',
+      'https://api.alquran.cloud/v1/juz/4/ur.jalandhry',
+    ]);
+    // The multi-edition form 404s on the real API for every juz — never use it.
+    expect(urls.some((url) => url.includes('/editions/'))).toBe(false);
+  });
+
+  it('maps ayahs spanning multiple surahs, matching translations by ayah number', async () => {
+    stubJuzFetch({
+      'quran-uthmani': [
+        {
+          number: 6231,
+          numberInSurah: 1,
+          text: 'قُلْ أَعُوذُ بِرَبِّ النَّاسِ',
+          surah: NAAS_SURAH,
+        },
+        {
+          number: 6210,
+          numberInSurah: 1,
+          text: 'قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ',
+          surah: FALAQ_SURAH,
+        },
+      ],
+      // Deliberately in a different order: translations match by number, not position.
+      'en.sahih': [
+        { number: 6210, numberInSurah: 1, text: 'Say, "I seek refuge in the Lord of daybreak' },
+        { number: 6231, numberInSurah: 1, text: 'Say, "I seek refuge in the Lord of mankind,' },
+      ],
+      'ur.jalandhry': [
+        { number: 6231, numberInSurah: 1, text: 'اردو ترجمہ الناس 1' },
+        { number: 6210, numberInSurah: 1, text: 'اردو ترجمہ الفلق 1' },
+      ],
+    });
 
     const juz = await fetchJuz(30);
 
-    expect(fetchMock.mock.calls[0][0]).toBe(
-      'https://api.alquran.cloud/v1/juz/30/editions/quran-uthmani,en.sahih,ur.jalandhry',
-    );
     expect(juz.number).toBe(30);
     expect(juz.ayahs).toHaveLength(2);
     expect(juz.ayahs[0]).toEqual({
@@ -394,75 +396,58 @@ describe('fetchJuz', () => {
       surahEnglishName: 'An-Naas',
     });
     expect(juz.ayahs[1].surahNumber).toBe(113);
+    expect(juz.ayahs[1].translations.english).toBe('Say, "I seek refuge in the Lord of daybreak');
   });
 
-  it('throws a QuranApiError when the Arabic edition is missing', async () => {
-    vi.stubGlobal(
-      'fetch',
-      vi.fn().mockResolvedValue(
-        jsonResponse({
-          code: 200,
-          status: 'OK',
-          data: [
-            {
-              number: 30,
-              edition: { identifier: 'en.sahih' },
-              ayahs: [],
-            },
-          ],
-        }),
-      ),
-    );
+  it('still loads the Arabic text when a translation is unavailable', async () => {
+    stubJuzFetch({
+      'quran-uthmani': [{ number: 6231, numberInSurah: 1, text: 'قُلْ', surah: NAAS_SURAH }],
+      'en.sahih': 'not-found',
+      'ur.jalandhry': [{ number: 6231, numberInSurah: 1, text: 'اردو' }],
+    });
+
+    const juz = await fetchJuz(30);
+
+    expect(juz.ayahs).toHaveLength(1);
+    expect(juz.ayahs[0].arabicText).toBe('قُلْ');
+    expect(juz.ayahs[0].translations.english).toBeUndefined();
+    expect(juz.ayahs[0].translations.urdu).toBe('اردو');
+  });
+
+  it('throws a QuranApiError when the Arabic edition is unavailable', async () => {
+    stubJuzFetch({
+      'quran-uthmani': 'not-found',
+      'en.sahih': [],
+      'ur.jalandhry': [],
+    });
 
     await expect(fetchJuz(30)).rejects.toBeInstanceOf(QuranApiError);
   });
 
   it('throws a QuranApiError when every ayah is missing its surah information', async () => {
-    vi.stubGlobal(
-      'fetch',
-      vi.fn().mockResolvedValue(
-        jsonResponse({
-          code: 200,
-          status: 'OK',
-          data: [
-            {
-              number: 30,
-              edition: { identifier: 'quran-uthmani' },
-              ayahs: [{ number: 6231, numberInSurah: 1, text: 'قُلْ' }],
-            },
-          ],
-        }),
-      ),
-    );
+    stubJuzFetch({
+      'quran-uthmani': [{ number: 6231, numberInSurah: 1, text: 'قُلْ' }],
+      'en.sahih': [],
+      'ur.jalandhry': [],
+    });
 
     await expect(fetchJuz(30)).rejects.toBeInstanceOf(QuranApiError);
   });
 
   it('skips just the one ayah missing surah information, keeping the rest', async () => {
-    vi.stubGlobal(
-      'fetch',
-      vi.fn().mockResolvedValue(
-        jsonResponse({
-          code: 200,
-          status: 'OK',
-          data: [
-            {
-              number: 30,
-              edition: { identifier: 'quran-uthmani' },
-              ayahs: [
-                { number: 6231, numberInSurah: 1, text: 'قُلْ' }, // missing `surah`
-                {
-                  number: 6210,
-                  numberInSurah: 1,
-                  text: 'قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ',
-                  surah: { number: 113, name: 'سُورَةُ الْفَلَقِ', englishName: 'Al-Falaq' },
-                },
-              ],
-            },
-          ],
-        }),
-      ),
-    );
+    stubJuzFetch({
+      'quran-uthmani': [
+        { number: 6231, numberInSurah: 1, text: 'قُلْ' }, // missing `surah`
+        {
+          number: 6210,
+          numberInSurah: 1,
+          text: 'قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ',
+          surah: FALAQ_SURAH,
+        },
+      ],
+      'en.sahih': [],
+      'ur.jalandhry': [],
+    });
 
     const juz = await fetchJuz(30);
 

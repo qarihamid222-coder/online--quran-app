@@ -30,8 +30,12 @@ export function LegalPage({
   return (
     <article className="mx-auto w-full max-w-3xl px-4 py-10 sm:px-6">
       <header className="border-card-border border-b pb-6">
-        <p className="text-primary text-sm font-semibold">Al-Hameed Online Quran Academy</p>
-        <h1 className="text-heading mt-1 text-3xl font-semibold">{title}</h1>
+        <p className="text-gold-text text-xs font-semibold tracking-[0.2em] uppercase">
+          Al-Hameed Online Quran Academy
+        </p>
+        <h1 className="font-display text-heading mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">
+          {title}
+        </h1>
         <p className="mt-2 text-sm text-zinc-500 dark:text-zinc-400">Last updated: {updated}</p>
         <p className="mt-4 text-base leading-relaxed text-zinc-700 dark:text-zinc-300">{intro}</p>
       </header>

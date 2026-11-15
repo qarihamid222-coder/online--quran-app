@@ -86,7 +86,7 @@ export default async function SurahReaderPage({ params }: PageProps<'/quran/[sur
         {previousSurah ? (
           <Link
             href={`/quran/${previousSurah}`}
-            className="text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-50"
+            className="text-heading hover:text-primary text-sm font-semibold dark:text-zinc-300 dark:hover:text-white"
           >
             ← Surah {previousSurah}
           </Link>
@@ -95,14 +95,14 @@ export default async function SurahReaderPage({ params }: PageProps<'/quran/[sur
         )}
         <Link
           href="/quran"
-          className="text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-50"
+          className="text-heading hover:text-primary text-sm font-semibold dark:text-zinc-300 dark:hover:text-white"
         >
           All Surahs
         </Link>
         {nextSurah ? (
           <Link
             href={`/quran/${nextSurah}`}
-            className="text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-50"
+            className="text-heading hover:text-primary text-sm font-semibold dark:text-zinc-300 dark:hover:text-white"
           >
             Surah {nextSurah} →
           </Link>

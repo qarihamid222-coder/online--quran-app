@@ -22,7 +22,7 @@ export function SurahAudioControls() {
       <button
         type="button"
         onClick={() => (hasStarted ? togglePlayPause() : playFromIndex(0))}
-        className="inline-flex items-center gap-2 rounded-full bg-zinc-900 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-zinc-700 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200"
+        className="bg-cta text-primary-foreground ring-accent/60 inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold ring-1 transition hover:brightness-125"
       >
         {isPlaying ? 'Pause Surah' : hasStarted ? 'Resume Surah' : 'Play Surah'}
       </button>

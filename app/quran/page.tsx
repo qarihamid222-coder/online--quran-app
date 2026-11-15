@@ -40,7 +40,9 @@ export default async function QuranSurahListPage() {
 
   return (
     <div className="mx-auto w-full max-w-5xl px-4 py-10 sm:px-6">
-      <h1 className="text-heading mb-6 text-2xl font-semibold">Surahs</h1>
+      <h1 className="font-display text-heading mb-8 text-3xl font-semibold tracking-tight sm:text-4xl">
+        Surahs
+      </h1>
       {surahs.length === 0 ? (
         <EmptyState
           title="No surahs found"

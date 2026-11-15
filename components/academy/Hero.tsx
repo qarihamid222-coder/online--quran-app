@@ -12,7 +12,7 @@ function CheckIcon() {
       viewBox="0 0 20 20"
       fill="none"
       aria-hidden="true"
-      className="text-gold-text size-5 shrink-0"
+      className="text-emerald size-5 shrink-0"
     >
       <circle cx="10" cy="10" r="9" stroke="currentColor" strokeWidth="1.5" />
       <path

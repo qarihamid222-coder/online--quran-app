@@ -42,9 +42,7 @@ export function BookmarkButton({
         isBookmarked ? `Remove bookmark for ayah ${ayahNumber}` : `Bookmark ayah ${ayahNumber}`
       }
       className={`text-xs font-medium underline-offset-2 hover:underline ${
-        isBookmarked
-          ? 'text-amber-600 dark:text-amber-500'
-          : 'text-zinc-400 hover:text-zinc-600 dark:text-zinc-500 dark:hover:text-zinc-300'
+        isBookmarked ? 'text-gold-text' : 'hover:text-heading text-zinc-500 dark:text-zinc-400'
       }`}
     >
       {isBookmarked ? '★ Bookmarked' : '☆ Bookmark'}

@@ -1,5 +1,7 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { CONTACT_EMAIL, PHONE_DISPLAY, whatsappLink } from '@/lib/academy/contact';
+import { getAcademyLogo } from '@/lib/academy/logo';
 
 const LINK_CLASSES = 'text-blue-100/80 transition-colors hover:text-accent';
 // Legal links get a 44px-tall tap area (padding, not extra visual size).
@@ -7,6 +9,8 @@ const LEGAL_LINK_PAD = 'inline-flex min-h-11 items-center px-1.5';
 const HEADING_CLASSES = 'text-accent text-xs font-semibold tracking-[0.2em] uppercase';
 
 export function Footer() {
+  const logo = getAcademyLogo();
+
   return (
     <footer className="from-navy-1 to-navy-2 relative overflow-hidden bg-gradient-to-b text-blue-100">
       <div aria-hidden="true" className="pattern-islamic absolute inset-0 opacity-30" />
@@ -17,6 +21,16 @@ export function Footer() {
 
       <div className="relative mx-auto grid max-w-6xl gap-12 px-4 py-16 sm:px-6 md:grid-cols-[1.4fr_1fr_1.2fr]">
         <div>
+          {logo ? (
+            <Image
+              src={logo.src}
+              alt={logo.alt}
+              width={200}
+              height={56}
+              unoptimized={logo.src.endsWith('.svg')}
+              className="mb-5 h-14 w-auto"
+            />
+          ) : null}
           <p
             dir="rtl"
             lang="ar"

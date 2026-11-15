@@ -1,11 +1,15 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { whatsappLink } from '@/lib/academy/contact';
+import { getAcademyLogo } from '@/lib/academy/logo';
 import { BookmarksNavLink } from './BookmarksNavLink';
 import { MobileNavMenu } from './MobileNavMenu';
 import { NAV_LINK_CLASSES } from './navStyles';
 import { ThemeToggle } from './ThemeToggle';
 
 export function Navbar() {
+  const logo = getAcademyLogo();
+
   return (
     <header className="border-card-border bg-background/80 sticky top-0 z-20 border-b backdrop-blur-xl">
       <nav className="relative mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
@@ -14,39 +18,16 @@ export function Navbar() {
           className="group flex shrink-0 items-center gap-3"
           aria-label="Al-Hameed Online Quran Academy — home"
         >
-          <svg
-            viewBox="0 0 48 48"
-            aria-hidden="true"
-            className="size-11 shrink-0 drop-shadow-md transition-transform duration-500 group-hover:rotate-[22deg]"
-          >
-            <defs>
-              <linearGradient id="emblem-bg" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0" stopColor="#12305f" />
-                <stop offset="1" stopColor="#0b2447" />
-              </linearGradient>
-              <linearGradient id="emblem-gold" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0" stopColor="#e6c872" />
-                <stop offset="1" stopColor="#b8902e" />
-              </linearGradient>
-            </defs>
-            <circle
-              cx="24"
-              cy="24"
-              r="22.5"
-              fill="url(#emblem-bg)"
-              stroke="url(#emblem-gold)"
-              strokeWidth="1.5"
+          {logo ? (
+            <Image
+              src={logo.src}
+              alt=""
+              width={176}
+              height={44}
+              unoptimized={logo.src.endsWith('.svg')}
+              className="h-11 w-auto shrink-0"
             />
-            <path
-              d="M24 7l4.2 10.1L38.3 13l-4.1 10.1L44 24l-9.8 4.9L38.3 35l-10.1-4.1L24 41l-4.2-10.1L9.7 35l4.1-10.1L4 24l9.8-.9L9.7 13l10.1 4.1z"
-              fill="none"
-              stroke="url(#emblem-gold)"
-              strokeWidth="1.2"
-              strokeLinejoin="round"
-            />
-            <circle cx="24" cy="24" r="6.5" fill="url(#emblem-gold)" />
-            <circle cx="24" cy="24" r="2.6" fill="#0b2447" />
-          </svg>
+          ) : null}
           <span className="leading-none">
             <span className="font-display text-heading block text-xl font-semibold tracking-tight sm:text-2xl">
               Al-Hameed

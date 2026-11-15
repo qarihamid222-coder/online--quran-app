@@ -17,7 +17,7 @@ const AUDIENCES = [
     title: 'Adults',
     description:
       'Flexible class times for working professionals, parents, and anyone starting (or restarting) their Quran journey.',
-    colorClass: 'bg-danger/10 text-danger',
+    colorClass: 'bg-emerald/10 text-emerald',
     glyph: '٢',
   },
   {

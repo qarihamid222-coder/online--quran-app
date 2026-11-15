@@ -12,13 +12,15 @@ const JUZ_NUMBERS = Array.from({ length: TOTAL_JUZ }, (_, i) => i + 1);
 export default function JuzIndexPage() {
   return (
     <div className="mx-auto w-full max-w-5xl px-4 py-10 sm:px-6">
-      <h1 className="text-heading mb-6 text-2xl font-semibold">Juz</h1>
+      <h1 className="font-display text-heading mb-8 text-3xl font-semibold tracking-tight sm:text-4xl">
+        Juz
+      </h1>
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-5">
         {JUZ_NUMBERS.map((juzNumber) => (
           <Link
             key={juzNumber}
             href={`/quran/juz/${juzNumber}`}
-            className="border-card-border flex items-center justify-center rounded-lg border bg-white px-4 py-6 text-center font-medium text-zinc-900 transition-colors hover:border-zinc-300 hover:bg-zinc-50 dark:bg-zinc-950 dark:text-zinc-100 dark:hover:border-zinc-700 dark:hover:bg-zinc-900"
+            className="border-card-border bg-surface text-heading hover:border-accent flex items-center justify-center rounded-lg border px-4 py-6 text-center font-medium shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
           >
             Juz {juzNumber}
           </Link>

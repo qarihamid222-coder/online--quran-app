@@ -11,7 +11,7 @@ export function TrialSection() {
           className="bg-accent/25 absolute -top-24 -right-24 size-72 rounded-full blur-3xl"
         />
         <div className="relative">
-          <span className="bg-danger text-danger-foreground inline-block rounded-full px-4 py-1 text-xs font-semibold tracking-wide uppercase dark:bg-red-900 dark:text-red-100">
+          <span className="bg-accent text-accent-foreground inline-block rounded-full px-4 py-1 text-xs font-semibold tracking-wide uppercase">
             Limited offer
           </span>
           <h2 className="font-display mt-5 text-3xl font-semibold tracking-tight text-white sm:text-5xl">

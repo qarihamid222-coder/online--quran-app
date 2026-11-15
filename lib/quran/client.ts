@@ -280,34 +280,51 @@ export function isValidJuzNumber(value: number): boolean {
   return Number.isInteger(value) && value >= 1 && value <= TOTAL_JUZ;
 }
 
+/**
+ * The alquran.cloud API has no multi-edition endpoint for a juz: unlike
+ * `/surah/{n}/editions/a,b,c`, the path `/juz/{n}/editions/a,b,c` responds with
+ * 404 "RESOURCE_NOT_FOUND" for every juz. A juz is only served one edition at a
+ * time, as `/juz/{n}/{edition}`, so each edition is requested separately (in
+ * parallel) and the translations are matched to the Arabic text by each ayah's
+ * global number.
+ */
+async function fetchJuzEdition(juzNumber: number, edition: string): Promise<RawJuzEdition> {
+  const data = await fetchQuranApi<RawJuzEdition>(`/juz/${juzNumber}/${edition}`);
+  if (typeof data !== 'object' || !Array.isArray(data.ayahs)) {
+    throw new QuranApiError('The Quran data service returned an unexpected juz.');
+  }
+  return data;
+}
+
+/** The translations are an enhancement: if one is unavailable, the Arabic text still loads. */
+async function fetchOptionalJuzTranslation(
+  juzNumber: number,
+  edition: string,
+): Promise<Map<number, string>> {
+  try {
+    const data = await fetchJuzEdition(juzNumber, edition);
+    return new Map(data.ayahs.map((ayah) => [ayah.number, ayah.text]));
+  } catch {
+    return new Map();
+  }
+}
+
 export async function fetchJuz(juzNumber: number): Promise<JuzDetail> {
   if (!isValidJuzNumber(juzNumber)) {
     throw new QuranApiError(`Invalid juz number: ${juzNumber}.`);
   }
 
-  const editions = [ARABIC_EDITION, TRANSLATION_EDITIONS.english, TRANSLATION_EDITIONS.urdu].join(
-    ',',
-  );
-  const rawData = await fetchQuranApi<RawJuzEdition[]>(`/juz/${juzNumber}/editions/${editions}`);
-  const data = assertArray(rawData, 'The Quran data service returned an unexpected juz.');
-
-  const arabicEdition = data.find((edition) => edition.edition.identifier === ARABIC_EDITION);
-  const englishEdition = data.find(
-    (edition) => edition.edition.identifier === TRANSLATION_EDITIONS.english,
-  );
-  const urduEdition = data.find(
-    (edition) => edition.edition.identifier === TRANSLATION_EDITIONS.urdu,
-  );
-
-  if (!arabicEdition || !Array.isArray(arabicEdition.ayahs)) {
-    throw new QuranApiError('The Quran data service did not return the Arabic text for this juz.');
-  }
+  const [arabicEdition, englishByAyah, urduByAyah] = await Promise.all([
+    fetchJuzEdition(juzNumber, ARABIC_EDITION),
+    fetchOptionalJuzTranslation(juzNumber, TRANSLATION_EDITIONS.english),
+    fetchOptionalJuzTranslation(juzNumber, TRANSLATION_EDITIONS.urdu),
+  ]);
 
   // A single ayah missing its surah grouping info shouldn't take down an
   // otherwise-good juz of ~200 verses — skip just that one ayah rather than
   // failing the whole page. This never fabricates data: an omitted ayah is
   // left out, never shown with invented surah info.
-  const ayahs: JuzAyah[] = arabicEdition.ayahs.flatMap((ayah, index) => {
+  const ayahs: JuzAyah[] = arabicEdition.ayahs.flatMap((ayah) => {
     if (
       !ayah.surah ||
       typeof ayah.surah.number !== 'number' ||
@@ -323,8 +340,8 @@ export async function fetchJuz(juzNumber: number): Promise<JuzDetail> {
         numberInQuran: ayah.number,
         arabicText: ayah.text,
         translations: {
-          english: englishEdition?.ayahs[index]?.text,
-          urdu: urduEdition?.ayahs[index]?.text,
+          english: englishByAyah.get(ayah.number),
+          urdu: urduByAyah.get(ayah.number),
         },
         audioUrl: getAyahAudioUrl(ayah.number),
         surahNumber: ayah.surah.number,

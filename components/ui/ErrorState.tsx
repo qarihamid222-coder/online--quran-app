@@ -13,7 +13,7 @@ export function ErrorState({ title = 'Something went wrong', message, onRetry }:
         <button
           type="button"
           onClick={onRetry}
-          className="mt-2 rounded-full bg-red-600 px-5 py-2 text-sm font-medium text-white transition-colors hover:bg-red-700"
+          className="bg-cta text-primary-foreground ring-accent/60 mt-2 rounded-full px-5 py-2 text-sm font-semibold ring-1 transition hover:brightness-125"
         >
           Try again
         </button>
