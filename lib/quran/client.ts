@@ -98,6 +98,12 @@ const FETCH_TIMEOUT_MS = 8000;
 const MAX_ATTEMPTS = 3;
 const RETRY_DELAY_MS = [300, 800];
 
+/** How long, and how many times, a request may be tried. */
+interface FetchBudget {
+  attempts?: number;
+  timeoutMs?: number;
+}
+
 function delay(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
@@ -111,16 +117,19 @@ function delay(ms: number): Promise<void> {
  * transient failures here, before they ever reach the page, is what actually
  * fixes that instead of just prettifying the error message.
  */
-async function fetchWithRetry(url: string): Promise<Response> {
+async function fetchWithRetry(
+  url: string,
+  { attempts = MAX_ATTEMPTS, timeoutMs = FETCH_TIMEOUT_MS }: FetchBudget = {},
+): Promise<Response> {
   let lastError: unknown;
 
-  for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
+  for (let attempt = 0; attempt < attempts; attempt++) {
     if (attempt > 0) {
       await delay(RETRY_DELAY_MS[attempt - 1]);
     }
 
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
+    const timeout = setTimeout(() => controller.abort(), timeoutMs);
 
     try {
       // `next.revalidate` engages Next's per-URL Data Cache directly on this
@@ -139,7 +148,7 @@ async function fetchWithRetry(url: string): Promise<Response> {
       });
       // Retry server errors (5xx) — likely transient — but not client errors
       // (4xx, e.g. an invalid path), which a retry can't fix.
-      if (response.status >= 500 && attempt < MAX_ATTEMPTS - 1) {
+      if (response.status >= 500 && attempt < attempts - 1) {
         lastError = new QuranApiError('The Quran data service returned an error.', response.status);
         continue;
       }
@@ -154,17 +163,20 @@ async function fetchWithRetry(url: string): Promise<Response> {
   throw lastError;
 }
 
-async function fetchQuranApi<T>(path: string): Promise<T> {
+async function fetchQuranApi<T>(path: string, budget?: FetchBudget): Promise<T> {
   let response: Response;
   try {
-    response = await fetchWithRetry(`${QURAN_API_BASE_URL}${path}`);
-  } catch {
+    response = await fetchWithRetry(`${QURAN_API_BASE_URL}${path}`, budget);
+  } catch (error) {
+    // Visitors see a generic message; the real cause goes to the server log.
+    console.error(`[quran-api] request failed: ${path}`, error);
     throw new QuranApiError(
       'Unable to reach the Quran data service. Check your connection and try again.',
     );
   }
 
   if (!response.ok) {
+    console.error(`[quran-api] ${response.status} for ${path}`);
     throw new QuranApiError('The Quran data service returned an error.', response.status);
   }
 
@@ -288,8 +300,12 @@ export function isValidJuzNumber(value: number): boolean {
  * parallel) and the translations are matched to the Arabic text by each ayah's
  * global number.
  */
-async function fetchJuzEdition(juzNumber: number, edition: string): Promise<RawJuzEdition> {
-  const data = await fetchQuranApi<RawJuzEdition>(`/juz/${juzNumber}/${edition}`);
+async function fetchJuzEdition(
+  juzNumber: number,
+  edition: string,
+  budget?: FetchBudget,
+): Promise<RawJuzEdition> {
+  const data = await fetchQuranApi<RawJuzEdition>(`/juz/${juzNumber}/${edition}`, budget);
   if (typeof data !== 'object' || !Array.isArray(data.ayahs)) {
     throw new QuranApiError('The Quran data service returned an unexpected juz.');
   }
@@ -302,7 +318,8 @@ async function fetchOptionalJuzTranslation(
   edition: string,
 ): Promise<Map<number, string>> {
   try {
-    const data = await fetchJuzEdition(juzNumber, edition);
+    // One quick try: a slow translation must never delay or break the Arabic text.
+    const data = await fetchJuzEdition(juzNumber, edition, { attempts: 2, timeoutMs: 5000 });
     return new Map(data.ayahs.map((ayah) => [ayah.number, ayah.text]));
   } catch {
     return new Map();
