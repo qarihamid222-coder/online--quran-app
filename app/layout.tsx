@@ -54,7 +54,16 @@ const notoNastaliqUrdu = Noto_Nastaliq_Urdu({
 const DESCRIPTION =
   'Learn Noorani Qaida, Nazra Quran, Tajweed, Hifz-ul-Quran, and Arabic online — live classes for children, adults, and beginners. Start your free 3-day trial today.';
 
+// Resolves relative metadata URLs (the social-share image) to absolute ones. Set
+// NEXT_PUBLIC_SITE_URL to the live domain; on Vercel the production URL is used otherwise.
+const SITE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL ||
+  (process.env.VERCEL_PROJECT_PRODUCTION_URL
+    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+    : 'http://localhost:3000');
+
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   // Page titles are suffixed with the brand name via this template, so the
   // academy is named the same way on every page and in search results.
   title: {

@@ -1,29 +1,16 @@
-import { existsSync } from 'node:fs';
-import path from 'node:path';
-
 /**
- * The academy's official logo, if one has been supplied.
+ * The official Al-Hameed Online Quran Academy logo, in the files under
+ * `public/images/brand/`:
+ *  - `logo.webp`      the full lockup (emblem, name, course icons), transparent background
+ *  - `logo-mark.webp` the emblem alone, cropped from the same artwork for small sizes
  *
- * To use it, drop the file at `public/images/brand/logo.<ext>` (svg, png, webp
- * or jpg — a transparent-background SVG or PNG is best) and it appears in the
- * navbar and footer automatically. Until then the site shows the academy name
- * as a text wordmark: no logo is invented or substituted.
- *
- * Server-only (reads the filesystem); import it from Server Components.
+ * The browser-tab icons (`app/favicon.ico`, `app/icon.png`, `app/apple-icon.png`) and the
+ * social-share cards (`app/opengraph-image.png`, `app/twitter-image.png`) are derived from
+ * the same artwork. Both logo files have transparent backgrounds with navy lettering, so
+ * show them on a light surface (see the Navbar and Footer).
  */
-const LOGO_EXTENSIONS = ['svg', 'png', 'webp', 'jpg', 'jpeg'] as const;
-
-export interface AcademyLogo {
-  src: string;
-  alt: string;
-}
-
-export function getAcademyLogo(): AcademyLogo | null {
-  for (const extension of LOGO_EXTENSIONS) {
-    const file = `logo.${extension}`;
-    if (existsSync(path.join(process.cwd(), 'public', 'images', 'brand', file))) {
-      return { src: `/images/brand/${file}`, alt: 'Al-Hameed Online Quran Academy' };
-    }
-  }
-  return null;
-}
+export const ACADEMY_LOGO = {
+  alt: 'Al-Hameed Online Quran Academy',
+  full: { src: '/images/brand/logo.webp', width: 975, height: 1000 },
+  mark: { src: '/images/brand/logo-mark.webp', width: 600, height: 409 },
+} as const;

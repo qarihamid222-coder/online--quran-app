@@ -1,15 +1,13 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { whatsappLink } from '@/lib/academy/contact';
-import { getAcademyLogo } from '@/lib/academy/logo';
+import { ACADEMY_LOGO } from '@/lib/academy/logo';
 import { BookmarksNavLink } from './BookmarksNavLink';
 import { MobileNavMenu } from './MobileNavMenu';
 import { NAV_LINK_CLASSES } from './navStyles';
 import { ThemeToggle } from './ThemeToggle';
 
 export function Navbar() {
-  const logo = getAcademyLogo();
-
   return (
     <header className="border-card-border bg-background/80 sticky top-0 z-20 border-b backdrop-blur-xl">
       <nav className="relative mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
@@ -18,16 +16,16 @@ export function Navbar() {
           className="group flex shrink-0 items-center gap-3"
           aria-label="Al-Hameed Online Quran Academy — home"
         >
-          {logo ? (
+          <span className="ring-accent/70 flex h-12 shrink-0 items-center rounded-xl bg-white px-1.5 shadow-sm ring-1">
             <Image
-              src={logo.src}
+              src={ACADEMY_LOGO.mark.src}
               alt=""
-              width={176}
-              height={44}
-              unoptimized={logo.src.endsWith('.svg')}
-              className="h-11 w-auto shrink-0"
+              width={ACADEMY_LOGO.mark.width}
+              height={ACADEMY_LOGO.mark.height}
+              priority
+              className="h-10 w-auto"
             />
-          ) : null}
+          </span>
           <span className="leading-none">
             <span className="font-display text-heading block text-xl font-semibold tracking-tight sm:text-2xl">
               Al-Hameed
