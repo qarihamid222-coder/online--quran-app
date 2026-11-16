@@ -19,7 +19,13 @@ export function ThemeToggle() {
     // render) can't know it, so reading it during render would mismatch the
     // server-rendered markup. The blocking init script already painted the
     // right theme; this just syncs the toggle's own selected state to it.
-    const stored = localStorage.getItem(THEME_STORAGE_KEY);
+    // Storage can be blocked (private mode, in-app browsers); never let that crash the page.
+    let stored: string | null = null;
+    try {
+      stored = localStorage.getItem(THEME_STORAGE_KEY);
+    } catch {
+      stored = null;
+    }
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setMode(isThemeMode(stored) ? stored : 'system');
   }, []);
@@ -35,7 +41,11 @@ export function ThemeToggle() {
 
   function selectMode(nextMode: ThemeMode) {
     setMode(nextMode);
-    localStorage.setItem(THEME_STORAGE_KEY, nextMode);
+    try {
+      localStorage.setItem(THEME_STORAGE_KEY, nextMode);
+    } catch {
+      // The choice still applies for this visit; it just can't be remembered.
+    }
     applyTheme(nextMode);
   }
 

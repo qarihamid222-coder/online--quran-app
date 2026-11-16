@@ -158,12 +158,33 @@ describe('when the browser blocks storage (private mode, in-app browsers)', () =
   });
 
   it('reports that bookmarks will not persist, so the UI can say so', () => {
+    vi.stubGlobal('window', {});
     vi.stubGlobal('localStorage', blockedStorage());
     expect(isStoragePersistent()).toBe(false);
   });
 
   it('reports persistence normally when storage works', () => {
+    vi.stubGlobal('window', {});
     expect(isStoragePersistent()).toBe(true);
+  });
+
+  it('survives browsers where merely touching localStorage throws (cookies blocked)', () => {
+    vi.stubGlobal('window', {});
+    vi.unstubAllGlobals();
+    Object.defineProperty(globalThis, 'localStorage', {
+      configurable: true,
+      get() {
+        throw new Error('SecurityError: access is denied for this document');
+      },
+    });
+    try {
+      addBookmark(makeBookmark({ numberInQuran: 7 }));
+      expect(getBookmarksSnapshot().map((b) => b.numberInQuran)).toEqual([7]);
+      vi.stubGlobal('window', {});
+      expect(isStoragePersistent()).toBe(false);
+    } finally {
+      Reflect.deleteProperty(globalThis, 'localStorage');
+    }
   });
 });
 

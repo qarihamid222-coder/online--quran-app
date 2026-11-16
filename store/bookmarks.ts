@@ -40,11 +40,23 @@ function isBookmark(value: unknown): value is Bookmark {
 let memoryBookmarks: Bookmark[] = EMPTY_BOOKMARKS;
 let storageFailed = false;
 
+/** localStorage, or null if there is none. Merely touching it throws when cookies/storage are blocked. */
+function getStorage(): Storage | null {
+  try {
+    return typeof localStorage === 'undefined' ? null : localStorage;
+  } catch {
+    storageFailed = true;
+    return null;
+  }
+}
+
 function readFromStorage(): Bookmark[] {
-  if (storageFailed || typeof localStorage === 'undefined') return memoryBookmarks;
+  if (storageFailed) return memoryBookmarks;
+  const storage = getStorage();
+  if (!storage) return memoryBookmarks;
 
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
+    const raw = storage.getItem(STORAGE_KEY);
     if (!raw) return EMPTY_BOOKMARKS;
 
     const parsed: unknown = JSON.parse(raw);
@@ -59,9 +71,10 @@ function writeToStorage(bookmarks: Bookmark[]): void {
   cachedSnapshot = null;
   memoryBookmarks = bookmarks;
 
-  if (typeof localStorage !== 'undefined') {
+  const storage = getStorage();
+  if (storage) {
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(bookmarks));
+      storage.setItem(STORAGE_KEY, JSON.stringify(bookmarks));
       storageFailed = false;
     } catch {
       // Storage unavailable (quota exceeded, private mode, etc.): keep them in memory.
@@ -74,13 +87,15 @@ function writeToStorage(bookmarks: Bookmark[]): void {
 
 /** Whether bookmarks will survive closing the tab (false when the browser blocks storage). */
 export function isStoragePersistent(): boolean {
+  if (typeof window === 'undefined') return true; // server render: nothing to report yet
   if (storageFailed) return false;
-  if (typeof localStorage === 'undefined') return true; // server render: nothing to report yet
+  const storage = getStorage();
+  if (!storage) return false;
 
   try {
     const probeKey = `${STORAGE_KEY}:probe`;
-    localStorage.setItem(probeKey, '1');
-    localStorage.removeItem(probeKey);
+    storage.setItem(probeKey, '1');
+    storage.removeItem(probeKey);
     return true;
   } catch {
     storageFailed = true;
