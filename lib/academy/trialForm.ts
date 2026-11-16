@@ -28,6 +28,12 @@ export type TrialFormErrors = Partial<Record<keyof TrialFormValues, string>>;
 /** Only digits, spaces, "+", and "-" — permissive about formatting, strict about content. */
 const PHONE_PATTERN = /^[0-9+\s-]{7,20}$/;
 
+/** A real number has 7–15 digits (the international E.164 maximum); "-------" or "+++" do not. */
+function hasValidDigitCount(value: string): boolean {
+  const digits = value.replace(/\D/g, '').length;
+  return digits >= 7 && digits <= 15;
+}
+
 export function validateTrialForm(values: TrialFormValues): TrialFormErrors {
   const errors: TrialFormErrors = {};
 
@@ -38,7 +44,7 @@ export function validateTrialForm(values: TrialFormValues): TrialFormErrors {
   const whatsappNumber = values.whatsappNumber.trim();
   if (!whatsappNumber) {
     errors.whatsappNumber = 'Please enter a WhatsApp number.';
-  } else if (!PHONE_PATTERN.test(whatsappNumber)) {
+  } else if (!PHONE_PATTERN.test(whatsappNumber) || !hasValidDigitCount(whatsappNumber)) {
     errors.whatsappNumber = 'Please enter a valid WhatsApp number.';
   }
 

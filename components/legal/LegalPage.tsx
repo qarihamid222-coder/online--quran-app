@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { PHONE_DISPLAY, whatsappLink } from '@/lib/academy/contact';
+import { CONTACT_EMAIL, PHONE_DISPLAY, whatsappLink } from '@/lib/academy/contact';
 
 export interface LegalSection {
   id: string;
@@ -30,8 +30,12 @@ export function LegalPage({
   return (
     <article className="mx-auto w-full max-w-3xl px-4 py-10 sm:px-6">
       <header className="border-card-border border-b pb-6">
-        <p className="text-primary text-sm font-semibold">Al-Hameed Online Quran Academy</p>
-        <h1 className="text-heading mt-1 text-3xl font-semibold">{title}</h1>
+        <p className="text-gold-text text-xs font-semibold tracking-[0.2em] uppercase">
+          Al-Hameed Online Quran Academy
+        </p>
+        <h1 className="font-display text-heading mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">
+          {title}
+        </h1>
         <p className="mt-2 text-sm text-zinc-500 dark:text-zinc-400">Last updated: {updated}</p>
         <p className="mt-4 text-base leading-relaxed text-zinc-700 dark:text-zinc-300">{intro}</p>
       </header>
@@ -41,12 +45,12 @@ export function LegalPage({
         className="bg-surface-soft border-card-border mt-6 rounded-xl border p-4"
       >
         <p className="text-heading text-sm font-semibold">On this page</p>
-        <ol className="mt-2 grid list-decimal gap-x-6 gap-y-1 pl-5 text-sm sm:grid-cols-2">
+        <ol className="mt-1 grid list-decimal gap-x-6 pl-5 text-sm sm:grid-cols-2">
           {sections.map((section) => (
             <li key={section.id}>
               <a
                 href={`#${section.id}`}
-                className="text-primary underline-offset-2 hover:underline"
+                className="text-primary inline-flex min-h-11 items-center underline-offset-2 hover:underline"
               >
                 {section.title}
               </a>
@@ -64,7 +68,7 @@ export function LegalPage({
             {section.paragraphs?.map((paragraph) => (
               <p
                 key={paragraph}
-                className="mt-3 text-base leading-relaxed text-zinc-700 dark:text-zinc-300"
+                className="mt-3 text-base leading-relaxed [overflow-wrap:anywhere] text-zinc-700 dark:text-zinc-300"
               >
                 {paragraph}
               </p>
@@ -97,15 +101,28 @@ export function LegalPage({
           >
             {PHONE_DISPLAY}
           </a>
+          , or email{' '}
+          <a
+            href={`mailto:${CONTACT_EMAIL}`}
+            className="text-primary font-medium [overflow-wrap:anywhere] underline-offset-2 hover:underline"
+          >
+            {CONTACT_EMAIL}
+          </a>
           .
         </p>
       </aside>
 
       <nav className="border-card-border mt-8 flex flex-wrap items-center justify-between gap-4 border-t pt-6 text-sm font-medium">
-        <Link href="/" className="hover:text-primary text-zinc-600 dark:text-zinc-400">
+        <Link
+          href="/"
+          className="hover:text-primary inline-flex min-h-11 items-center text-zinc-600 dark:text-zinc-400"
+        >
           ← Back to home
         </Link>
-        <Link href={otherPage.href} className="text-primary hover:underline">
+        <Link
+          href={otherPage.href}
+          className="text-primary inline-flex min-h-11 items-center hover:underline"
+        >
           {otherPage.label} →
         </Link>
       </nav>

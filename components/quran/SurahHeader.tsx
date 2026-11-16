@@ -11,7 +11,7 @@ export function SurahHeader({ surah }: SurahHeaderProps) {
       <h1 dir="rtl" lang="ar" className="font-arabic text-heading text-4xl">
         {surah.name}
       </h1>
-      <p className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">
+      <p className="text-heading text-lg font-semibold">
         {surah.englishName} · {surah.englishNameTranslation}
       </p>
       <p className="text-sm text-zinc-500 dark:text-zinc-400">

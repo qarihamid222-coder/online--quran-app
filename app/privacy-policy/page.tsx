@@ -3,7 +3,7 @@ import { LegalPage } from '@/components/legal/LegalPage';
 import { PRIVACY_INTRO, PRIVACY_SECTIONS, PRIVACY_UPDATED } from '@/lib/legal/privacyPolicy';
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy — Al-Hameed Online Quran Academy',
+  title: 'Privacy Policy',
   description:
     'How Al-Hameed Online Quran Academy collects, uses, stores and protects student and parent information.',
 };

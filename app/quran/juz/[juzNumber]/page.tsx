@@ -11,12 +11,20 @@ import { SurahDivider } from '@/components/quran/SurahDivider';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { TOTAL_JUZ, fetchJuz, isValidJuzNumber } from '@/lib/quran';
 
-// This route has no generateStaticParams, so a route-level `revalidate`
-// export has no effect here — Next.js only applies it to a static shell,
-// which a param route without generateStaticParams never gets. The actual
-// per-juz caching (so a transient upstream failure can't reach rendering
-// for a juz that's already been read) lives on the fetch call itself, in
-// lib/quran/client.ts.
+// Pages are generated the first time they are visited, then cached and refreshed
+// in the background every hour (incremental static regeneration). Returning an
+// empty list from generateStaticParams is what enables this for a dynamic route,
+// and it means a visitor is served the cached page even if the Quran data
+// service is slow or briefly unavailable. A render that fails is never cached.
+export const revalidate = 3600;
+export const dynamicParams = true;
+// The page makes several calls to a third-party service; allow time for retries
+// on hosts that cap function duration.
+export const maxDuration = 30;
+
+export function generateStaticParams() {
+  return [];
+}
 
 function parseJuzNumber(juzId: string): number | null {
   const juzNumber = Number(juzId);
@@ -30,11 +38,11 @@ export async function generateMetadata({
   const juzNumber = parseJuzNumber(juzId);
 
   if (juzNumber === null) {
-    return { title: 'Juz not found — Online Quran' };
+    return { title: 'Juz not found' };
   }
 
   return {
-    title: `Juz ${juzNumber} — Online Quran`,
+    title: `Juz ${juzNumber}`,
     description: `Read juz ${juzNumber} of the Holy Quran with Arabic text and translations.`,
   };
 }
@@ -70,7 +78,9 @@ export default async function JuzReaderPage({ params }: PageProps<'/quran/juz/[j
     <article className="mx-auto w-full max-w-3xl px-4 py-10 sm:px-6">
       <header className="border-card-border flex flex-col items-center gap-2 border-b pb-6 text-center">
         <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400">Juz</p>
-        <h1 className="text-heading text-3xl font-semibold">Juz {juz.number}</h1>
+        <h1 className="font-display text-heading text-4xl font-semibold tracking-tight">
+          Juz {juz.number}
+        </h1>
       </header>
 
       {juz.ayahs.length === 0 ? (
@@ -117,7 +127,7 @@ export default async function JuzReaderPage({ params }: PageProps<'/quran/juz/[j
         {previousJuz ? (
           <Link
             href={`/quran/juz/${previousJuz}`}
-            className="text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-50"
+            className="text-heading hover:text-primary text-sm font-semibold dark:text-zinc-300 dark:hover:text-white"
           >
             ← Juz {previousJuz}
           </Link>
@@ -126,14 +136,14 @@ export default async function JuzReaderPage({ params }: PageProps<'/quran/juz/[j
         )}
         <Link
           href="/quran/juz"
-          className="text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-50"
+          className="text-heading hover:text-primary text-sm font-semibold dark:text-zinc-300 dark:hover:text-white"
         >
           All Juz
         </Link>
         {nextJuz ? (
           <Link
             href={`/quran/juz/${nextJuz}`}
-            className="text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-50"
+            className="text-heading hover:text-primary text-sm font-semibold dark:text-zinc-300 dark:hover:text-white"
           >
             Juz {nextJuz} →
           </Link>

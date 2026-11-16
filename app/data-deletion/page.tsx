@@ -3,14 +3,14 @@ import Link from 'next/link';
 import { CONTACT_EMAIL, PHONE_DISPLAY, whatsappLink } from '@/lib/academy/contact';
 
 export const metadata: Metadata = {
-  title: 'Data Deletion Instructions — Al-Hameed Online Quran Academy',
+  title: 'Data Deletion Instructions',
   description:
     'How students and parents can ask Al-Hameed Online Quran Academy to delete their personal information.',
 };
 
 const UPDATED = '10 November 2026';
 
-// The email option is shown only once a real address replaces the placeholder in lib/academy/contact.ts.
+// The email option is hidden if CONTACT_EMAIL in lib/academy/contact.ts is ever reset to an @example.com placeholder.
 const HAS_EMAIL = !CONTACT_EMAIL.toLowerCase().endsWith('@example.com');
 
 const REQUEST_MESSAGE = [
@@ -50,8 +50,12 @@ export default function DataDeletionPage() {
   return (
     <article className="mx-auto w-full max-w-3xl px-4 py-10 sm:px-6">
       <header className="border-card-border border-b pb-6">
-        <p className="text-primary text-sm font-semibold">Al-Hameed Online Quran Academy</p>
-        <h1 className="text-heading mt-1 text-3xl font-semibold">Data Deletion Instructions</h1>
+        <p className="text-gold-text text-xs font-semibold tracking-[0.2em] uppercase">
+          Al-Hameed Online Quran Academy
+        </p>
+        <h1 className="font-display text-heading mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">
+          Data Deletion Instructions
+        </h1>
         <p className="mt-2 text-sm text-zinc-500 dark:text-zinc-400">Last updated: {UPDATED}</p>
         <p className={`mt-4 ${BODY}`}>
           Students and parents can ask us to delete the personal information we hold about them at
@@ -111,7 +115,7 @@ export default function DataDeletionPage() {
                 Write to{' '}
                 <a
                   href={`mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent('Data deletion request')}`}
-                  className="text-primary font-medium underline-offset-2 hover:underline"
+                  className="text-primary font-medium [overflow-wrap:anywhere] underline-offset-2 hover:underline"
                 >
                   {CONTACT_EMAIL}
                 </a>{' '}

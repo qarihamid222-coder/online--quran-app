@@ -10,12 +10,20 @@ import { SurahHeader } from '@/components/quran/SurahHeader';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { TOTAL_SURAHS, fetchSurah, isValidSurahNumber } from '@/lib/quran';
 
-// This route has no generateStaticParams, so a route-level `revalidate`
-// export has no effect here — Next.js only applies it to a static shell,
-// which a param route without generateStaticParams never gets. The actual
-// per-surah caching (so a transient upstream failure can't reach rendering
-// for a surah that's already been read) lives on the fetch call itself, in
-// lib/quran/client.ts.
+// Pages are generated the first time they are visited, then cached and refreshed
+// in the background every hour (incremental static regeneration). Returning an
+// empty list from generateStaticParams is what enables this for a dynamic route,
+// and it means a visitor is served the cached page even if the Quran data
+// service is slow or briefly unavailable. A render that fails is never cached.
+export const revalidate = 3600;
+export const dynamicParams = true;
+// The page makes several calls to a third-party service; allow time for retries
+// on hosts that cap function duration.
+export const maxDuration = 30;
+
+export function generateStaticParams() {
+  return [];
+}
 
 function parseSurahNumber(surahId: string): number | null {
   const surahNumber = Number(surahId);
@@ -29,11 +37,11 @@ export async function generateMetadata({
   const surahNumber = parseSurahNumber(surahId);
 
   if (surahNumber === null) {
-    return { title: 'Surah not found — Online Quran' };
+    return { title: 'Surah not found' };
   }
 
   return {
-    title: `Surah ${surahNumber} — Online Quran`,
+    title: `Surah ${surahNumber}`,
     description: `Read surah ${surahNumber} of the Holy Quran with Arabic text and translations.`,
   };
 }
@@ -86,7 +94,7 @@ export default async function SurahReaderPage({ params }: PageProps<'/quran/[sur
         {previousSurah ? (
           <Link
             href={`/quran/${previousSurah}`}
-            className="text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-50"
+            className="text-heading hover:text-primary text-sm font-semibold dark:text-zinc-300 dark:hover:text-white"
           >
             ← Surah {previousSurah}
           </Link>
@@ -95,14 +103,14 @@ export default async function SurahReaderPage({ params }: PageProps<'/quran/[sur
         )}
         <Link
           href="/quran"
-          className="text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-50"
+          className="text-heading hover:text-primary text-sm font-semibold dark:text-zinc-300 dark:hover:text-white"
         >
           All Surahs
         </Link>
         {nextSurah ? (
           <Link
             href={`/quran/${nextSurah}`}
-            className="text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-50"
+            className="text-heading hover:text-primary text-sm font-semibold dark:text-zinc-300 dark:hover:text-white"
           >
             Surah {nextSurah} →
           </Link>

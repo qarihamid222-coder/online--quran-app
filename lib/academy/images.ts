@@ -7,7 +7,7 @@
  */
 export const HERO_IMAGE: { src: string; alt: string } | null = {
   src: '/images/academy/hero-banner.webp',
-  alt: 'Al-Hameed Academy — Online Quran, Arabic & Islamic Studies banner, with icons for Quran Reading, Arabic Language, Tajweed Classes, and For All Ages, a Quran on a wooden stand, golden lanterns, and a mosque visible through an arched window',
+  alt: 'Al-Hameed Online Quran Academy — Online Quran, Arabic & Islamic Studies banner, with icons for Quran Reading, Arabic Language, Tajweed Classes, and For All Ages, a Quran on a wooden stand, golden lanterns, and a mosque visible through an arched window',
 };
 
 /**

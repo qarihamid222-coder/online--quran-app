@@ -1,3 +1,4 @@
+import { CONTACT_EMAIL } from '@/lib/academy/contact';
 import type { LegalSection } from '@/components/legal/LegalPage';
 
 export const TERMS_UPDATED = '10 November 2026';
@@ -112,6 +113,8 @@ export const TERMS_SECTIONS: LegalSection[] = [
   {
     id: 'contact',
     title: 'Contact us',
-    paragraphs: ['For any question about these terms, message us on WhatsApp at +92 323 7185867.'],
+    paragraphs: [
+      `For any question about these terms, message us on WhatsApp at +92 323 7185867 or email us at ${CONTACT_EMAIL}.`,
+    ],
   },
 ];

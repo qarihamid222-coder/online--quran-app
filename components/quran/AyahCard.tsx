@@ -64,12 +64,8 @@ export function AyahCard({ ayah, index, surahNumber, surahEnglishName }: AyahCar
   return (
     <li
       id={anchorId}
-      className={`flex scroll-mt-20 flex-col gap-3 border-b border-zinc-100 py-6 transition-colors last:border-b-0 dark:border-zinc-900 ${
-        isLinked
-          ? 'bg-amber-50 dark:bg-amber-950/30'
-          : isActive
-            ? 'bg-zinc-50 dark:bg-zinc-900/40'
-            : ''
+      className={`border-card-border flex scroll-mt-20 flex-col gap-3 border-b py-6 transition-colors last:border-b-0 ${
+        isLinked ? 'bg-accent/10' : isActive ? 'bg-accent/10' : ''
       }`}
     >
       <div className="flex items-start gap-3">
@@ -78,7 +74,7 @@ export function AyahCard({ ayah, index, surahNumber, surahEnglishName }: AyahCar
           onClick={handleToggle}
           aria-pressed={isActivePlaying}
           aria-label={isActivePlaying ? `Pause ayah ${ayah.number}` : `Play ayah ${ayah.number}`}
-          className="mt-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-xs font-semibold text-zinc-600 transition-colors hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700"
+          className="bg-primary/10 text-primary dark:bg-primary/20 hover:bg-primary/20 mt-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-semibold transition-colors"
         >
           {isActiveLoading ? '…' : isActivePlaying ? '❚❚' : ayah.number}
         </button>
@@ -115,7 +111,7 @@ export function AyahCard({ ayah, index, surahNumber, surahEnglishName }: AyahCar
         <button
           type="button"
           onClick={handleCopyLink}
-          className="text-xs font-medium text-zinc-400 underline-offset-2 hover:text-zinc-600 hover:underline dark:text-zinc-500 dark:hover:text-zinc-300"
+          className="hover:text-heading text-xs font-medium text-zinc-500 underline-offset-2 hover:underline dark:text-zinc-400"
         >
           {copied ? 'Copied!' : 'Copy link'}
         </button>

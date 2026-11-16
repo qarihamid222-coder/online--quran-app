@@ -9,24 +9,20 @@ export function SurahCard({ surah }: SurahCardProps) {
   return (
     <Link
       href={`/quran/${surah.number}`}
-      className="group border-card-border flex items-center justify-between gap-4 rounded-lg border bg-white px-4 py-3 transition-colors hover:border-zinc-300 hover:bg-zinc-50 dark:bg-zinc-950 dark:hover:border-zinc-700 dark:hover:bg-zinc-900"
+      className="group border-card-border bg-surface hover:border-accent flex items-center justify-between gap-4 rounded-lg border px-4 py-3 shadow-sm transition hover:shadow-md"
     >
       <div className="flex items-center gap-4">
-        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm font-semibold text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
+        <span className="bg-primary/10 text-primary dark:bg-primary/20 flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-sm font-semibold">
           {surah.number}
         </span>
         <div>
-          <p className="font-medium text-zinc-900 dark:text-zinc-100">{surah.englishName}</p>
+          <p className="text-heading font-medium">{surah.englishName}</p>
           <p className="text-sm text-zinc-500 dark:text-zinc-400">
             {surah.englishNameTranslation} · {surah.numberOfAyahs} verses · {surah.revelationType}
           </p>
         </div>
       </div>
-      <span
-        dir="rtl"
-        lang="ar"
-        className="font-arabic shrink-0 text-xl text-zinc-800 dark:text-zinc-200"
-      >
+      <span dir="rtl" lang="ar" className="font-arabic text-heading shrink-0 text-xl">
         {surah.name}
       </span>
     </Link>

@@ -28,7 +28,7 @@ export const AUDIENCE_LABELS: Record<Audience, string> = {
  *  color dominating. */
 export const AUDIENCE_BADGE_CLASSES: Record<Audience, string> = {
   children: 'bg-primary/10 text-primary dark:bg-primary/15',
-  adults: 'bg-danger/10 text-danger dark:bg-danger/15',
+  adults: 'bg-emerald/10 text-emerald dark:bg-emerald/15',
   beginners: 'bg-accent/10 text-accent-foreground dark:bg-accent/20 dark:text-accent',
 };
 

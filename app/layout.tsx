@@ -1,13 +1,15 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import {
   Amiri_Quran,
   Geist,
   Geist_Mono,
   Noto_Naskh_Arabic,
   Noto_Nastaliq_Urdu,
+  Playfair_Display,
 } from 'next/font/google';
 import { Footer } from '@/components/layout/Footer';
 import { Navbar } from '@/components/layout/Navbar';
+import { ChatWidget } from '@/components/chat/ChatWidget';
 import { WhatsAppButton } from '@/components/layout/WhatsAppButton';
 import { THEME_INIT_SCRIPT } from '@/lib/theme';
 import './globals.css';
@@ -19,6 +21,12 @@ const geistSans = Geist({
 
 const geistMono = Geist_Mono({
   variable: '--font-geist-mono',
+  subsets: ['latin'],
+});
+
+// Display serif used only for premium headings on the home page.
+const playfair = Playfair_Display({
+  variable: '--font-display',
   subsets: ['latin'],
 });
 
@@ -43,10 +51,45 @@ const notoNastaliqUrdu = Noto_Nastaliq_Urdu({
   subsets: ['arabic'],
 });
 
+const DESCRIPTION =
+  'Learn Noorani Qaida, Nazra Quran, Tajweed, Hifz-ul-Quran, and Arabic online — live classes for children, adults, and beginners. Start your free 3-day trial today.';
+
+// Resolves relative metadata URLs (the social-share image) to absolute ones. Set
+// NEXT_PUBLIC_SITE_URL to the live domain; on Vercel the production URL is used otherwise.
+const SITE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL ||
+  (process.env.VERCEL_PROJECT_PRODUCTION_URL
+    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+    : 'http://localhost:3000');
+
 export const metadata: Metadata = {
-  title: 'Al-Hameed Online Quran Academy',
-  description:
-    'Learn Noorani Qaida, Nazra Quran, Tajweed, Hifz-ul-Quran, and Arabic online — live classes for children, adults, and beginners. Start your free 3-day trial today.',
+  metadataBase: new URL(SITE_URL),
+  // Page titles are suffixed with the brand name via this template, so the
+  // academy is named the same way on every page and in search results.
+  title: {
+    default: 'Al-Hameed Online Quran Academy',
+    template: '%s | Al-Hameed Online Quran Academy',
+  },
+  description: DESCRIPTION,
+  applicationName: 'Al-Hameed Online Quran Academy',
+  openGraph: {
+    type: 'website',
+    siteName: 'Al-Hameed Online Quran Academy',
+    title: 'Al-Hameed Online Quran Academy',
+    description: DESCRIPTION,
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Al-Hameed Online Quran Academy',
+    description: DESCRIPTION,
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#faf7f0' },
+    { media: '(prefers-color-scheme: dark)', color: '#0b1424' },
+  ],
 };
 
 export default function RootLayout({ children }: LayoutProps<'/'>) {
@@ -54,24 +97,28 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${geistSans.variable} ${geistMono.variable} ${notoNaskhArabic.variable} ${amiriQuran.variable} ${notoNastaliqUrdu.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} ${notoNaskhArabic.variable} ${amiriQuran.variable} ${notoNastaliqUrdu.variable} h-full antialiased`}
     >
       <head>
         {/* Applies the saved theme before first paint, avoiding a flash of the wrong theme. */}
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
       </head>
       <body className="flex min-h-full flex-col">
-        {/* A thin, site-wide tricolor accent so green, gold, and red are all
-            visible on every page without any large color block dominating
-            the cream/white background. */}
+        {/* A thin, site-wide navy-and-gold accent line. */}
         <div
           aria-hidden="true"
-          className="from-primary via-accent to-danger h-1.5 w-full bg-gradient-to-r"
+          className="from-navy-1 via-accent to-navy-1 h-1 w-full bg-gradient-to-r"
         />
+        <a href="#main" className="skip-link">
+          Skip to main content
+        </a>
         <Navbar />
-        <main className="flex flex-1 flex-col">{children}</main>
+        <main id="main" className="flex flex-1 flex-col">
+          {children}
+        </main>
         <Footer />
         <WhatsAppButton />
+        <ChatWidget />
       </body>
     </html>
   );
