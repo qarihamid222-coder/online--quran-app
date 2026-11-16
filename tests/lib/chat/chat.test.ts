@@ -260,20 +260,18 @@ describe('POST /api/chat logging', () => {
     const log = vi.spyOn(console, 'error').mockImplementation(() => {});
     vi.stubGlobal(
       'fetch',
-      vi
-        .fn()
-        .mockResolvedValue(
-          Response.json(
-            {
-              error: {
-                type: 'invalid_request_error',
-                code: 'invalid_api_key',
-                message: 'Incorrect API key provided: sk-secret-do-not-print',
-              },
+      vi.fn().mockResolvedValue(
+        Response.json(
+          {
+            error: {
+              type: 'invalid_request_error',
+              code: 'invalid_api_key',
+              message: 'Incorrect API key provided: sk-secret-do-not-print',
             },
-            { status: 401 },
-          ),
+          },
+          { status: 401 },
         ),
+      ),
     );
 
     expect((await POST(chatRequest(VALID))).status).toBe(502);
