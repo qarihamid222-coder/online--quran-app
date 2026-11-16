@@ -27,8 +27,21 @@ function isBookmark(value: unknown): value is Bookmark {
   );
 }
 
+/**
+ * Bookmarks live in localStorage so they persist across refreshes and visits.
+ *
+ * Some browsers refuse to store data for a site (private/incognito windows,
+ * in-app browsers, "block all cookies" settings, a full quota). Rather than
+ * silently doing nothing in that case, the list is also held in memory, so
+ * bookmarking, the navbar count and the Bookmarks page keep working for the
+ * current visit; `isStoragePersistent()` lets the UI say that they won't be
+ * kept after the tab is closed.
+ */
+let memoryBookmarks: Bookmark[] = EMPTY_BOOKMARKS;
+let storageFailed = false;
+
 function readFromStorage(): Bookmark[] {
-  if (typeof localStorage === 'undefined') return EMPTY_BOOKMARKS;
+  if (storageFailed || typeof localStorage === 'undefined') return memoryBookmarks;
 
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
@@ -37,22 +50,42 @@ function readFromStorage(): Bookmark[] {
     const parsed: unknown = JSON.parse(raw);
     return Array.isArray(parsed) ? parsed.filter(isBookmark) : EMPTY_BOOKMARKS;
   } catch {
-    return EMPTY_BOOKMARKS;
+    // Unreadable (blocked storage or corrupted JSON): fall back to what we hold in memory.
+    return memoryBookmarks;
   }
 }
 
 function writeToStorage(bookmarks: Bookmark[]): void {
   cachedSnapshot = null;
+  memoryBookmarks = bookmarks;
 
   if (typeof localStorage !== 'undefined') {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(bookmarks));
+      storageFailed = false;
     } catch {
-      // Storage unavailable (quota exceeded, private mode, etc.) — ignore.
+      // Storage unavailable (quota exceeded, private mode, etc.): keep them in memory.
+      storageFailed = true;
     }
   }
 
   for (const listener of listeners) listener();
+}
+
+/** Whether bookmarks will survive closing the tab (false when the browser blocks storage). */
+export function isStoragePersistent(): boolean {
+  if (storageFailed) return false;
+  if (typeof localStorage === 'undefined') return true; // server render: nothing to report yet
+
+  try {
+    const probeKey = `${STORAGE_KEY}:probe`;
+    localStorage.setItem(probeKey, '1');
+    localStorage.removeItem(probeKey);
+    return true;
+  } catch {
+    storageFailed = true;
+    return false;
+  }
 }
 
 export function truncateSnippet(text: string): string {
@@ -97,9 +130,22 @@ export function toggleBookmark(bookmark: Bookmark): boolean {
   return nowBookmarked;
 }
 
+// Another tab changed the saved bookmarks: refresh this tab's view of them.
+function handleStorageEvent(event: StorageEvent): void {
+  if (event.key !== null && event.key !== STORAGE_KEY) return;
+  cachedSnapshot = null;
+  for (const listener of listeners) listener();
+}
+
 export function subscribeToBookmarks(listener: Listener): () => void {
+  if (listeners.length === 0 && typeof window !== 'undefined') {
+    window.addEventListener('storage', handleStorageEvent);
+  }
   listeners = [...listeners, listener];
   return () => {
     listeners = listeners.filter((existing) => existing !== listener);
+    if (listeners.length === 0 && typeof window !== 'undefined') {
+      window.removeEventListener('storage', handleStorageEvent);
+    }
   };
 }

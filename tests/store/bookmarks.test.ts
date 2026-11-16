@@ -3,6 +3,7 @@ import {
   addBookmark,
   getBookmarksSnapshot,
   isBookmarked,
+  isStoragePersistent,
   removeBookmark,
   subscribeToBookmarks,
   toggleBookmark,
@@ -117,5 +118,73 @@ describe('bookmarks store', () => {
     unsubscribe();
     addBookmark(makeBookmark());
     expect(listener).toHaveBeenCalledTimes(2);
+  });
+});
+
+describe('when the browser blocks storage (private mode, in-app browsers)', () => {
+  function blockedStorage() {
+    return {
+      getItem: () => {
+        throw new Error('SecurityError');
+      },
+      setItem: () => {
+        throw new Error('QuotaExceededError');
+      },
+      removeItem: () => {
+        throw new Error('SecurityError');
+      },
+    };
+  }
+
+  afterEach(() => {
+    // Leave the module in its normal, working-storage state for the next test.
+    vi.stubGlobal('localStorage', createFakeLocalStorage());
+    addBookmark(makeBookmark({ numberInQuran: -2 }));
+    removeBookmark(-2);
+  });
+
+  it('still saves, lists, toggles and removes bookmarks for the current visit', () => {
+    vi.stubGlobal('localStorage', blockedStorage());
+
+    addBookmark(makeBookmark({ numberInQuran: 1 }));
+    addBookmark(makeBookmark({ numberInQuran: 2 }));
+    expect(getBookmarksSnapshot().map((b) => b.numberInQuran)).toEqual([1, 2]);
+    expect(isBookmarked(1)).toBe(true);
+
+    removeBookmark(1);
+    expect(getBookmarksSnapshot().map((b) => b.numberInQuran)).toEqual([2]);
+    expect(toggleBookmark(makeBookmark({ numberInQuran: 3 }))).toBe(true);
+    expect(toggleBookmark(makeBookmark({ numberInQuran: 3 }))).toBe(false);
+  });
+
+  it('reports that bookmarks will not persist, so the UI can say so', () => {
+    vi.stubGlobal('localStorage', blockedStorage());
+    expect(isStoragePersistent()).toBe(false);
+  });
+
+  it('reports persistence normally when storage works', () => {
+    expect(isStoragePersistent()).toBe(true);
+  });
+});
+
+describe('persistence', () => {
+  it('survives a "refresh": a fresh read of storage still has the bookmarks', () => {
+    const storage = createFakeLocalStorage();
+    vi.stubGlobal('localStorage', storage);
+    addBookmark(makeBookmark({ numberInQuran: 386, surahNumber: 3, ayahNumber: 93 }));
+
+    // Simulate a page reload: the in-memory snapshot is lost, storage is not.
+    const raw = storage.getItem('quran-bookmarks');
+    expect(JSON.parse(raw as string)).toHaveLength(1);
+    removeBookmark(-1); // forces the cached snapshot to be rebuilt from storage
+    expect(getBookmarksSnapshot().map((b) => b.numberInQuran)).toEqual([386]);
+  });
+
+  it('ignores corrupted stored data instead of crashing', () => {
+    const storage = createFakeLocalStorage();
+    storage.setItem('quran-bookmarks', '{not json');
+    vi.stubGlobal('localStorage', storage);
+    removeBookmark(-1);
+    expect(getBookmarksSnapshot()).toEqual([]);
   });
 });
