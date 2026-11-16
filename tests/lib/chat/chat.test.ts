@@ -1,5 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { POST } from '@/app/api/chat/route';
+import { GET, POST } from '@/app/api/chat/route';
+import { readApiKey } from '@/lib/chat/env';
 import { CONTACT_EMAIL, PHONE_DISPLAY } from '@/lib/academy/contact';
 import { COURSES } from '@/lib/academy/courses';
 import { buildSystemPrompt } from '@/lib/chat/knowledge';
@@ -169,5 +170,114 @@ describe('POST /api/chat', () => {
     let last = 200;
     for (let i = 0; i < 9; i++) last = (await POST(chatRequest(VALID, '9.9.9.9'))).status;
     expect(last).toBe(429);
+  });
+});
+
+describe('readApiKey', () => {
+  it('returns an empty string when there is no usable key', () => {
+    for (const raw of [undefined, '', '   ', '\n', '""', "''"]) {
+      expect(readApiKey(raw)).toBe('');
+    }
+  });
+
+  it('removes the whitespace, newlines and quotes that pasting adds', () => {
+    expect(readApiKey('sk-test-123')).toBe('sk-test-123');
+    expect(readApiKey('  sk-test-123\n')).toBe('sk-test-123');
+    expect(readApiKey('"sk-test-123"')).toBe('sk-test-123');
+    expect(readApiKey(" 'sk-test-123' \r\n")).toBe('sk-test-123');
+  });
+});
+
+describe('assistant knowledge', () => {
+  const prompt = buildSystemPrompt();
+
+  it('covers the confirmed facts: both male and female teachers, no fees, three languages', () => {
+    expect(prompt).toMatch(/both male and female teachers/i);
+    expect(prompt).toMatch(/Urdu/);
+    expect(prompt).toMatch(/Arabic/);
+    expect(prompt).toMatch(/English/);
+    expect(prompt).toMatch(/Nazira/);
+    expect(prompt).toMatch(/Never state or estimate them/);
+  });
+});
+
+describe('GET /api/chat (health check)', () => {
+  afterEach(() => vi.unstubAllEnvs());
+
+  it('reports a missing key as 503 without revealing anything secret', async () => {
+    vi.stubEnv('OPENAI_API_KEY', '');
+    vi.stubEnv('OPENAI_API_KE', 'typo-value-should-never-appear');
+    const response = await GET();
+    const text = await response.text();
+    expect(response.status).toBe(503);
+    expect(JSON.parse(text)).toMatchObject({ status: 'missing_api_key', configured: false });
+    // Variable NAMES that look OpenAI-related are listed (to spot typos); values never are.
+    expect(JSON.parse(text).openAiVariableNamesSeen).toContain('OPENAI_API_KE');
+    expect(text).not.toContain('typo-value-should-never-appear');
+  });
+
+  it('reports a configured key as ready and never echoes it', async () => {
+    vi.stubEnv('OPENAI_API_KEY', 'sk-secret-do-not-print');
+    const response = await GET();
+    const text = await response.text();
+    expect(response.status).toBe(200);
+    expect(JSON.parse(text)).toMatchObject({ status: 'ready', configured: true });
+    expect(text).not.toContain('sk-secret-do-not-print');
+  });
+});
+
+describe('POST /api/chat logging', () => {
+  beforeEach(() => {
+    resetRateLimitForTests();
+    vi.stubEnv('OPENAI_API_KEY', 'sk-secret-do-not-print');
+  });
+  afterEach(() => {
+    vi.unstubAllEnvs();
+    vi.unstubAllGlobals();
+    vi.restoreAllMocks();
+  });
+
+  it('uses a key that was pasted with whitespace and quotes', async () => {
+    vi.stubEnv('OPENAI_API_KEY', ' "sk-secret-do-not-print"\n');
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValue(Response.json({ choices: [{ message: { content: 'ok' } }] }));
+    vi.stubGlobal('fetch', fetchMock);
+
+    expect((await POST(chatRequest(VALID))).status).toBe(200);
+    expect(fetchMock.mock.calls[0][1].headers.Authorization).toBe('Bearer sk-secret-do-not-print');
+  });
+
+  it('logs why it answered 503, without the key', async () => {
+    vi.stubEnv('OPENAI_API_KEY', '');
+    const log = vi.spyOn(console, 'error').mockImplementation(() => {});
+
+    expect((await POST(chatRequest(VALID))).status).toBe(503);
+    expect(log.mock.calls.flat().join(' ')).toMatch(/OPENAI_API_KEY is missing/);
+  });
+
+  it('logs the OpenAI error type (not its message or the key) when OpenAI refuses', async () => {
+    const log = vi.spyOn(console, 'error').mockImplementation(() => {});
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue(
+        Response.json(
+          {
+            error: {
+              type: 'invalid_request_error',
+              code: 'invalid_api_key',
+              message: 'Incorrect API key provided: sk-secret-do-not-print',
+            },
+          },
+          { status: 401 },
+        ),
+      ),
+    );
+
+    expect((await POST(chatRequest(VALID))).status).toBe(502);
+    const logged = log.mock.calls.flat().join(' ');
+    expect(logged).toMatch(/HTTP 401/);
+    expect(logged).toMatch(/invalid_api_key/);
+    expect(logged).not.toContain('sk-secret-do-not-print');
   });
 });
