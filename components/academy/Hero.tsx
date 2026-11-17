@@ -5,26 +5,8 @@ import { ImagePlaceholder } from '@/components/ui/ImagePlaceholder';
 import { whatsappLink } from '@/lib/academy/contact';
 import { COURSES } from '@/lib/academy/courses';
 import { HERO_IMAGE } from '@/lib/academy/images';
-
-function CheckIcon() {
-  return (
-    <svg
-      viewBox="0 0 20 20"
-      fill="none"
-      aria-hidden="true"
-      className="text-emerald size-5 shrink-0"
-    >
-      <circle cx="10" cy="10" r="9" stroke="currentColor" strokeWidth="1.5" />
-      <path
-        d="M6 10.3l2.6 2.6L14 7.5"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
+import { SECTION_IDS } from '@/lib/academy/sections';
+import { CheckIcon } from './icons';
 
 const TRUST_POINTS = ['Live one-on-one classes', 'Free 3-day trial', 'Children & adults'];
 
@@ -45,11 +27,16 @@ export function Hero() {
       />
       <div
         aria-hidden="true"
-        className="pattern-islamic absolute inset-0 -z-10 [mask-image:radial-gradient(ellipse_at_top_right,black,transparent_70%)] opacity-60"
+        className="pattern-zellige animate-pattern-drift absolute inset-0 -z-10 [mask-image:radial-gradient(ellipse_at_top_right,black,transparent_72%)] opacity-50"
       />
       <div
         aria-hidden="true"
-        className="bg-accent/10 absolute -top-32 -right-32 -z-10 size-[28rem] rounded-full blur-3xl"
+        className="bg-accent/15 animate-glow absolute -top-32 -right-32 -z-10 size-[30rem] rounded-full blur-3xl"
+      />
+
+      <div
+        aria-hidden="true"
+        className="bg-primary/15 absolute -bottom-40 -left-32 -z-10 size-[28rem] rounded-full blur-3xl"
       />
 
       <div className="mx-auto grid max-w-6xl gap-14 px-4 pt-14 pb-10 sm:px-6 sm:pt-20 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-10 lg:pt-24">
@@ -75,7 +62,7 @@ export function Hero() {
             style={{ '--delay': '0.2s' } as CSSProperties}
             className="rise font-display text-heading mt-7 text-5xl leading-[1.08] font-semibold tracking-tight sm:text-6xl lg:text-7xl"
           >
-            Learn the <span className="text-primary italic">Quran</span>, beautifully
+            Learn the <span className="text-gold-text italic">Quran</span>, beautifully
             <span className="text-accent">.</span>
           </h1>
 
@@ -117,7 +104,7 @@ export function Hero() {
               </span>
             </a>
             <Link
-              href="#courses"
+              href={`#${SECTION_IDS.courses}`}
               className="border-heading/25 text-heading hover:border-accent hover:bg-accent/10 inline-flex w-full items-center justify-center rounded-full border px-8 py-[1.1rem] text-base font-semibold transition-colors sm:w-auto dark:border-white/25 dark:text-zinc-100"
             >
               Explore Courses
@@ -127,7 +114,7 @@ export function Hero() {
           <ul className="mt-8 flex flex-col items-center gap-x-6 gap-y-3 text-sm font-medium text-zinc-700 sm:flex-row sm:flex-wrap sm:justify-center lg:justify-start dark:text-zinc-300">
             {TRUST_POINTS.map((point) => (
               <li key={point} className="flex items-center gap-2">
-                <CheckIcon />
+                <CheckIcon className="text-emerald size-5 shrink-0" />
                 {point}
               </li>
             ))}

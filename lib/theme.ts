@@ -2,6 +2,9 @@ export type ThemeMode = 'light' | 'dark' | 'system';
 
 export const THEME_STORAGE_KEY = 'theme';
 
+/** What a first-time visitor sees: the deep-navy theme. Light and System stay available. */
+export const DEFAULT_THEME_MODE: ThemeMode = 'dark';
+
 export function isThemeMode(value: unknown): value is ThemeMode {
   return value === 'light' || value === 'dark' || value === 'system';
 }
@@ -28,7 +31,8 @@ export function applyTheme(mode: ThemeMode): void {
 export const THEME_INIT_SCRIPT = `(function() {
   try {
     var stored = localStorage.getItem(${JSON.stringify(THEME_STORAGE_KEY)});
-    var isDark = stored === 'dark' || (stored !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    var mode = stored === 'light' || stored === 'dark' || stored === 'system' ? stored : ${JSON.stringify(DEFAULT_THEME_MODE)};
+    var isDark = mode === 'dark' || (mode === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
     document.documentElement.classList.toggle('dark', isDark);
   } catch (e) {}
 })();`;

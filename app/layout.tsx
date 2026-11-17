@@ -86,10 +86,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#faf7f0' },
-    { media: '(prefers-color-scheme: dark)', color: '#0b1424' },
-  ],
+  themeColor: '#060e22',
 };
 
 export default function RootLayout({ children }: LayoutProps<'/'>) {
@@ -97,7 +94,7 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} ${notoNaskhArabic.variable} ${amiriQuran.variable} ${notoNastaliqUrdu.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} ${notoNaskhArabic.variable} ${amiriQuran.variable} ${notoNastaliqUrdu.variable} dark h-full antialiased`}
     >
       <head>
         {/* Applies the saved theme before first paint, avoiding a flash of the wrong theme. */}

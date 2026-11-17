@@ -34,23 +34,24 @@
 }
 
 :root.dark {
-  --background: #0b1424;
-  --foreground: #ededed;
-  --primary: #3b82f6;
+  /* Default look: deep navy page, royal-blue sections, ivory type, gold accents. */
+  --background: #060e22;
+  --foreground: #e6ebf7;
+  --primary: #7ea8ff;
   --primary-foreground: #ffffff;
-  --accent: #d4b45e;
-  --accent-foreground: #171717;
+  --accent: #d9b95f;
+  --accent-foreground: #0b1530;
   --danger: #f87171;
   --danger-foreground: #450a0a;
-  --surface: #10213a;
-  --surface-soft: #13263f;
-  --cta: #2f62c4;
+  --surface: #0d1b3b;
+  --surface-soft: #0a1735;
+  --cta: #2c5bd1;
   --emerald: #34d399;
-  --navy-1: #12305f;
-  --navy-2: #0b2447;
-  --gold-text: #d4b45e;
-  --heading: #bfdbfe;
-  --card-border: #1e3a5f;
+  --navy-1: #0f2a5e;
+  --navy-2: #071733;
+  --gold-text: #e3c56e;
+  --heading: #f6efd9;
+  --card-border: #1f3568;
   --arabic-text: #86efac;
   --urdu-text: #fdba74;
 }
@@ -89,10 +90,35 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+/* Section backgrounds. Light theme: soft cream. Default dark theme: royal blue
+   deepening into navy, so the page reads as navy and royal-blue bands. */
+.section-royal {
+  background: var(--surface-soft);
+}
+:root.dark .section-royal {
+  background: linear-gradient(180deg, #0f2a66 0%, #0b2150 52%, #081a3f 100%);
+}
+
 /* Subtle eight-point star lattice used as a decorative section backdrop. */
 .pattern-islamic {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='72' viewBox='0 0 72 72' fill='none' stroke='%23c9a44c' stroke-opacity='0.22' stroke-width='1'%3E%3Cpath d='M36 6l8.5 20.5L65 36l-20.5 9.5L36 66l-8.5-20.5L7 36l20.5-9.5z'/%3E%3Ccircle cx='36' cy='36' r='9'/%3E%3C/svg%3E");
   background-size: 72px 72px;
+}
+
+/* Denser interlaced-star tiling (zellige-style) for hero and footer backdrops. */
+.pattern-zellige {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96' viewBox='0 0 96 96' fill='none' stroke='%23d9b95f' stroke-width='1'%3E%3Cg stroke-opacity='0.34'%3E%3Cpath d='M48 4l10.6 21.5L82 14 70.5 37.4 92 48 70.5 58.6 82 82 58.6 70.5 48 92 37.4 70.5 14 82l11.5-23.4L4 48l21.5-10.6L14 14l23.4 11.5z'/%3E%3Ccircle cx='48' cy='48' r='13'/%3E%3C/g%3E%3Cg stroke-opacity='0.14'%3E%3Cpath d='M0 0l96 96M96 0L0 96M48 0v96M0 48h96'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 96px 96px;
+}
+
+/* Smooth in-page navigation, with room for the sticky header. */
+html {
+  scroll-padding-top: 5.5rem;
+}
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -163,6 +189,31 @@ body {
   .fade-up {
     animation: fade-up 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
     animation-delay: var(--delay, 0s);
+  }
+  /* Slow drift for decorative geometric backdrops. */
+  @keyframes pattern-drift {
+    from {
+      background-position: 0 0;
+    }
+    to {
+      background-position: 96px 96px;
+    }
+  }
+  .animate-pattern-drift {
+    animation: pattern-drift 90s linear infinite;
+  }
+  /* Soft gold glow that gently breathes behind key elements. */
+  @keyframes glow-breathe {
+    0%,
+    100% {
+      opacity: 0.55;
+    }
+    50% {
+      opacity: 0.9;
+    }
+  }
+  .animate-glow {
+    animation: glow-breathe 7s ease-in-out infinite;
   }
   @supports (animation-timeline: view()) {
     .reveal {

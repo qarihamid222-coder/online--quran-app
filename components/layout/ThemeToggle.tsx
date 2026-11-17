@@ -1,7 +1,13 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { THEME_STORAGE_KEY, applyTheme, isThemeMode, type ThemeMode } from '@/lib/theme';
+import {
+  DEFAULT_THEME_MODE,
+  THEME_STORAGE_KEY,
+  applyTheme,
+  isThemeMode,
+  type ThemeMode,
+} from '@/lib/theme';
 
 const OPTIONS: { mode: ThemeMode; label: string; icon: string }[] = [
   { mode: 'light', label: 'Light', icon: '☀️' },
@@ -12,7 +18,7 @@ const OPTIONS: { mode: ThemeMode; label: string; icon: string }[] = [
 export function ThemeToggle() {
   // The blocking init script already applied the correct class before paint;
   // read back what it decided so this control starts in sync.
-  const [mode, setMode] = useState<ThemeMode>('system');
+  const [mode, setMode] = useState<ThemeMode>(DEFAULT_THEME_MODE);
 
   useEffect(() => {
     // Read localStorage only after mount: the server (and the client's first
@@ -27,7 +33,7 @@ export function ThemeToggle() {
       stored = null;
     }
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    setMode(isThemeMode(stored) ? stored : 'system');
+    setMode(isThemeMode(stored) ? stored : DEFAULT_THEME_MODE);
   }, []);
 
   useEffect(() => {

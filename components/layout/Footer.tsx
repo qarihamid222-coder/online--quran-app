@@ -2,6 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { CONTACT_EMAIL, PHONE_DISPLAY, whatsappLink } from '@/lib/academy/contact';
 import { ACADEMY_LOGO } from '@/lib/academy/logo';
+import { HOME_NAV_LINKS, sectionHref } from '@/lib/academy/sections';
 
 const LINK_CLASSES = 'text-blue-100/80 transition-colors hover:text-accent';
 // Legal links get a 44px-tall tap area (padding, not extra visual size).
@@ -17,7 +18,7 @@ export function Footer() {
         className="via-accent absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent to-transparent"
       />
 
-      <div className="relative mx-auto grid max-w-6xl gap-12 px-4 py-16 sm:px-6 md:grid-cols-[1.4fr_1fr_1.2fr]">
+      <div className="relative mx-auto grid max-w-6xl gap-12 px-4 py-16 sm:px-6 md:grid-cols-[1.3fr_1.3fr_1.1fr]">
         <div>
           <span className="ring-accent/60 mb-5 inline-block rounded-2xl bg-white p-3 shadow-lg ring-1">
             <Image
@@ -48,25 +49,49 @@ export function Footer() {
           </p>
         </div>
 
-        <nav aria-label="Footer">
-          <h2 className={HEADING_CLASSES}>Explore</h2>
-          <ul className="mt-5 flex flex-col gap-3 text-sm">
-            <li>
-              <Link href="/" className={LINK_CLASSES}>
-                Home
-              </Link>
-            </li>
-            <li>
-              <Link href="/#courses" className={LINK_CLASSES}>
-                Courses
-              </Link>
-            </li>
-            <li>
-              <Link href="/quran" className={LINK_CLASSES}>
-                Read Quran
-              </Link>
-            </li>
-          </ul>
+        <nav aria-label="Footer" className="grid grid-cols-2 gap-8">
+          <div>
+            <h2 className={HEADING_CLASSES}>Academy</h2>
+            <ul className="mt-5 flex flex-col gap-3 text-sm">
+              <li>
+                <Link href="/" className={LINK_CLASSES}>
+                  Home
+                </Link>
+              </li>
+              {HOME_NAV_LINKS.map((link) => (
+                <li key={link.section}>
+                  <Link href={sectionHref(link.section)} className={LINK_CLASSES}>
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+              <li>
+                <Link href={sectionHref('trial')} className={LINK_CLASSES}>
+                  Free trial
+                </Link>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h2 className={HEADING_CLASSES}>Quran reader</h2>
+            <ul className="mt-5 flex flex-col gap-3 text-sm">
+              <li>
+                <Link href="/quran" className={LINK_CLASSES}>
+                  Surahs
+                </Link>
+              </li>
+              <li>
+                <Link href="/quran/juz" className={LINK_CLASSES}>
+                  Juz
+                </Link>
+              </li>
+              <li>
+                <Link href="/bookmarks" className={LINK_CLASSES}>
+                  Bookmarks
+                </Link>
+              </li>
+            </ul>
+          </div>
         </nav>
 
         <div>
