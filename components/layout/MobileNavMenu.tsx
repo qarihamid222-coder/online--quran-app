@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { whatsappLink } from '@/lib/academy/contact';
+import { HOME_NAV_LINKS, sectionHref } from '@/lib/academy/sections';
 import { BookmarksNavLink } from './BookmarksNavLink';
 import { ThemeToggle } from './ThemeToggle';
 
@@ -29,7 +30,7 @@ export function MobileNavMenu() {
   }, [isOpen]);
 
   return (
-    <div className="lg:hidden">
+    <div className="xl:hidden">
       <button
         ref={buttonRef}
         type="button"
@@ -55,15 +56,22 @@ export function MobileNavMenu() {
       {isOpen ? (
         <div
           id="mobile-nav-panel"
-          className="fade-up border-card-border bg-surface absolute inset-x-0 top-full border-b px-3 py-4 shadow-2xl [--delay:0s]"
+          className="fade-up border-card-border bg-surface absolute inset-x-0 top-full max-h-[calc(100dvh-4.5rem)] overflow-y-auto border-b px-3 py-4 shadow-2xl [--delay:0s]"
         >
           <div className="flex flex-col gap-1">
-            <Link href="/#courses" onClick={() => setIsOpen(false)} className={MOBILE_LINK_CLASSES}>
-              Courses
-              <span aria-hidden="true" className="text-gold-text">
-                ›
-              </span>
-            </Link>
+            {HOME_NAV_LINKS.map((link) => (
+              <Link
+                key={link.section}
+                href={sectionHref(link.section)}
+                onClick={() => setIsOpen(false)}
+                className={MOBILE_LINK_CLASSES}
+              >
+                {link.label}
+                <span aria-hidden="true" className="text-gold-text">
+                  ›
+                </span>
+              </Link>
+            ))}
             <Link href="/quran" onClick={() => setIsOpen(false)} className={MOBILE_LINK_CLASSES}>
               Surahs
               <span aria-hidden="true" className="text-gold-text">

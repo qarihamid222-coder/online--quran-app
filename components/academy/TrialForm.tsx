@@ -13,7 +13,7 @@ import {
 } from '@/lib/academy/trialForm';
 
 const FIELD_CLASSES =
-  'scroll-mt-28 w-full rounded-lg border border-card-border bg-white px-4 py-2.5 text-base text-zinc-900 placeholder:text-zinc-400 focus:border-primary focus:outline-none dark:bg-zinc-900 dark:text-zinc-100';
+  'scroll-mt-28 min-h-11 w-full rounded-lg border border-card-border bg-white px-4 py-2.5 text-base text-zinc-900 placeholder:text-zinc-500 focus:border-accent focus:outline-none dark:bg-surface-soft dark:text-heading dark:placeholder:text-zinc-400';
 // Page order of the validated fields, and the input id of each, so focus can
 // jump to the first invalid one after a failed submit.
 const FIELD_ORDER = [
@@ -30,7 +30,7 @@ const FIELD_IDS: Record<(typeof FIELD_ORDER)[number], string> = {
   courseSlug: 'trial-course',
   preferredLanguage: 'trial-language',
 };
-const LABEL_CLASSES = 'text-sm font-medium text-zinc-700 dark:text-zinc-300';
+const LABEL_CLASSES = 'text-sm font-medium text-zinc-700 dark:text-zinc-200';
 
 export function TrialForm() {
   const [values, setValues] = useState<TrialFormValues>(EMPTY_TRIAL_FORM_VALUES);
@@ -74,7 +74,7 @@ export function TrialForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="border-card-border mx-auto mt-8 flex max-w-xl flex-col gap-4 rounded-2xl border bg-white p-6 text-left shadow-sm sm:p-8 dark:bg-zinc-950"
+      className="border-card-border dark:bg-surface mx-auto mt-8 flex max-w-xl flex-col gap-4 rounded-3xl border bg-white p-6 text-left shadow-sm sm:p-8 dark:shadow-2xl dark:shadow-black/30"
       noValidate
       data-hide-floating-actions
     >

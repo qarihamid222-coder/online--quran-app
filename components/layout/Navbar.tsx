@@ -2,6 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { whatsappLink } from '@/lib/academy/contact';
 import { ACADEMY_LOGO } from '@/lib/academy/logo';
+import { HOME_NAV_LINKS, sectionHref } from '@/lib/academy/sections';
 import { BookmarksNavLink } from './BookmarksNavLink';
 import { MobileNavMenu } from './MobileNavMenu';
 import { NAV_LINK_CLASSES } from './navStyles';
@@ -10,7 +11,7 @@ import { ThemeToggle } from './ThemeToggle';
 export function Navbar() {
   return (
     <header className="border-card-border bg-background/80 sticky top-0 z-20 border-b backdrop-blur-xl">
-      <nav className="relative mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
+      <nav className="relative mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
         <Link
           href="/"
           className="group flex min-w-0 shrink items-center gap-2 sm:gap-3"
@@ -35,10 +36,13 @@ export function Navbar() {
             </span>
           </span>
         </Link>
-        <div className="hidden items-center gap-1 lg:flex">
-          <Link href="/#courses" className={NAV_LINK_CLASSES}>
-            Courses
-          </Link>
+        <div className="hidden items-center gap-0.5 xl:flex">
+          {HOME_NAV_LINKS.map((link) => (
+            <Link key={link.section} href={sectionHref(link.section)} className={NAV_LINK_CLASSES}>
+              {link.label}
+            </Link>
+          ))}
+          <span aria-hidden="true" className="bg-card-border mx-1 h-6 w-px" />
           <Link href="/quran" className={NAV_LINK_CLASSES}>
             Surahs
           </Link>

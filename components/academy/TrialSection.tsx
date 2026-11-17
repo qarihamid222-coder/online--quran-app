@@ -1,9 +1,13 @@
 import { whatsappLink } from '@/lib/academy/contact';
+import { SECTION_IDS } from '@/lib/academy/sections';
 import { TrialForm } from './TrialForm';
 
 export function TrialSection() {
   return (
-    <section className="bg-background px-4 py-20 text-center sm:px-6 lg:py-28">
+    <section
+      id={SECTION_IDS.trial}
+      className="bg-background px-4 py-20 text-center sm:px-6 lg:py-28"
+    >
       <div className="from-navy-1 to-navy-2 relative mx-auto max-w-4xl overflow-hidden rounded-[2rem] bg-gradient-to-br px-6 py-14 shadow-2xl shadow-blue-900/25 sm:px-12">
         <div aria-hidden="true" className="pattern-islamic absolute inset-0 opacity-50" />
         <div

@@ -1,10 +1,14 @@
 import { COURSES } from '@/lib/academy/courses';
+import { SECTION_IDS } from '@/lib/academy/sections';
 import { CourseCard } from './CourseCard';
 import { SectionHeading } from './SectionHeading';
 
 export function CoursesSection() {
   return (
-    <section id="courses" className="bg-surface relative scroll-mt-16 px-4 py-20 sm:px-6 lg:py-28">
+    <section
+      id={SECTION_IDS.courses}
+      className="bg-surface relative scroll-mt-16 px-4 py-20 sm:px-6 lg:py-28"
+    >
       <div
         aria-hidden="true"
         className="via-accent/60 absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent to-transparent"

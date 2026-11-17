@@ -1,3 +1,4 @@
+import { SECTION_IDS } from '@/lib/academy/sections';
 import { SectionHeading } from './SectionHeading';
 
 const STEPS = [
@@ -18,8 +19,15 @@ const STEPS = [
 
 export function HowItWorks() {
   return (
-    <section className="bg-surface-soft px-4 py-20 sm:px-6 lg:py-28">
-      <div className="mx-auto max-w-6xl">
+    <section
+      id={SECTION_IDS.howItWorks}
+      className="section-royal relative overflow-hidden px-4 py-20 sm:px-6 lg:py-28"
+    >
+      <div
+        aria-hidden="true"
+        className="pattern-islamic absolute inset-0 [mask-image:linear-gradient(to_bottom,black,transparent_70%)] opacity-40"
+      />
+      <div className="relative mx-auto max-w-6xl">
         <SectionHeading
           eyebrow="Getting started"
           title="Begin in three simple steps"
@@ -29,9 +37,9 @@ export function HowItWorks() {
           {STEPS.map((step, index) => (
             <li
               key={step.title}
-              className="reveal border-card-border bg-surface relative rounded-3xl border p-8 shadow-sm"
+              className="reveal border-card-border bg-surface/80 hover:border-accent/70 relative rounded-3xl border p-8 shadow-sm backdrop-blur transition duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-black/30"
             >
-              <span className="font-display text-accent/70 text-6xl leading-none font-semibold">
+              <span className="font-display text-gold-text/80 text-6xl leading-none font-semibold">
                 {index + 1}
               </span>
               <h3 className="font-display text-heading mt-4 text-xl font-semibold">{step.title}</h3>
